@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BECOME_TILE.py</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin: 20px 0;
+        }
+        pre[class*="language-"] {
+            border-radius: 4px;
+            margin: 0;
+        }
+        h1, h2 {
+            color: #2c3e50;
+        }
+        .intro {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #3498db;
+        }
+        .personal-note {
+            background: #fdf6e3;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-style: italic;
+        }
+        .code-header {
+            background: #2c3e50;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px 8px 0 0;
+            margin-bottom: -20px;
+        }
+        .description {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .code-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Radial Cross-Section Generator</h1>
+    
+    <div class="description">
+        <p>This code prepares an axial slice of a radially symmetric slice from a 2D z-pinch for use in PERSEUS simulations. It's supplementary to read_vtk.py by James Young (<a href="https://github.com/badwolfend/xpinch/blob/main/read_vtk.py">GitHub</a>).</p>
+        
+        <p>This code is too long to fix all of my stupid comments and odd function names, so I will just leave them in. I hope they are as amusing to you as they are to me.</p>
+    </div>        
+
+        <div class="code-container">
+            <pre><code class="language-python">from read_vtk import *
+from read_vtk import mesh
+import cv2 
+from scipy.interpolate import CubicSpline, interp1d
+import matplotlib.pyplot as plt
+
+####################
+# DOMAIN VARIABLES #
+####################
+"""DEPENDENT ON YOUR SIMULATION'S (PERSEUS) PARAMETERS"""
+ngu = 2  # number of ghost cells (for PERSEUS, this is 2)
+nx = 161  # number of cells in the x direction
+nz = 545  # number of cells in the z direction
+wavelength = 532e-9  # wavelength of the laser (in meters)
+rlength_PERSEUS = 1e-3  # length (in r) of the simulation
+zlength_PERSEUS = 3.375e-3  # length (in z) of the simulation
+
+"""INDEPENDENT DOMAIN VARIABLES"""
+ntiles = 64  # for splitting the 2d domain into tiles
+ntilesrow = 8
+target_resolution = wavelength/30  # Should be approx. λ/30 for laser simulation
+dl = target_resolution  # second definition of the same variable, because I cannot decide what to name it.
+
+"""DEPENDENT DOMAIN VARIABLES"""
+dl_PERSEUS = rlength_PERSEUS/nx
+scale_factor = dl_PERSEUS/dl
+slice_index = int(.5*nz) #the index of the slice you want to analyze (in the z direction)
+"""SWITCH VARIABLES"""
+plot_x_pinch = False
+plot_tiles = False
+plot_pizza = False
+plot_rh_i = False #plot the original z-pinch
+print_boundary_corner_coordinates = True #prints x1,x2,y1,y2 for the upsampled window
+plot_boundary_box_location = False #creates a fake upsampled pizza then plots a box connecting the 4 corners of the boundary box so you have an idea of where it is with regards to the entire cross section slice
+convert_to_dat_file = True #determines if the tiles get saved as dat files at the end
+plot_pizzas = False
+plot_upsampled_pizzas = False
+convert_to_dat_file = True
+
+
+########################
+# FUNCTION DEFINITIONS #
+########################
+def get_field_value(x,y,slice_array): #gets the value of a field at a given radial distance from the center of the slice
+    x = np.float64(x)
+    y = np.float64(y)
+    rval = np.sqrt(x**2 + y**2)
+    rval = int(rval)
+    if rval >= len(slice_array):
+        value = np.min(slice_array)
+    else:
+        value = slice_array[rval]
+    return value
+
+
+def circle_pizza(target_field): #creates a 2D representation of a radially symmetric slice of a given target field
+    smesh = unstructured_to_structured(mesh, target_field)
+    nx, nz, nu = smesh.dimensions
+    print(nx,nz)
+    Fy = get_mesh_subset(smesh, [0,nx], [0,nz], target_field)
+    print(np.shape(Fy))
+    slice_array = Fy[slice_index,:]
+    #slice_array = np.log(slice_array)/np.log(10) #CC comment this line out to turn off log of ion density
+    x = np.arange(-nx,nx,1)
+    y = np.arange(-nx,nx,1)
+    r = np.zeros((len(x)-1,len(y)-1))
+    for i in range(len(x)-1):
+        for j in range(len(y)-1):
+            r[i,j] = get_field_value(x[i],y[j],slice_array)
+    return r
+
+def bring_your_own_pizza(slice_array, *boundaries,windowed): #generates a 2D (radially symmetric) array based on the given slice array (1D array where slice[0] is the center of the 2d disc))
+    if windowed == True:
+        x1 = boundaries[0]
+        x2 = boundaries[1]
+        y1 = boundaries[2]
+        y2 = boundaries[3]
+        window_pizza = np.zeros([x2-x1,y2-y1])
+        for i in range(x2-x1):
+            for j in range(y2-y1):
+                windowed-slice
+                window_pizza[i,j] = get_field_value(x1+i,y2+j,upsampled_slice)        
+        return window_pizza    
+    else:
+        x = np.arange(-len(slice_array),len(slice_array),1)
+        y = np.arange(-len(slice_array),len(slice_array),1)
+        r = np.zeros((len(x)-1,len(y)-1))
+        for i in range(len(x)-1):
+            for j in range(len(y)-1):
+                r[i,j] = get_field_value(x[i],y[j],slice_array)
+    return r
+
+def linear_upsample(slice_array, scale_factor):
+    original_indices = np.arange(len(slice_array))
+    new_length = int(len(slice_array) * scale_factor)
+    new_indices = np.linspace(0, len(slice_array) - 1, new_length)
+    interp_func = interp1d(original_indices, slice_array, kind='linear', fill_value="extrapolate")
+    upsampled_slice = interp_func(new_indices)
+    return upsampled_slice
+
+def colorbar_plot(target_field,target_array,vmin=None,vmax=None):
+    plt.title(f"{target_field} at z_index={slice_index} & t={time_analyze}")
+    plt.imshow(target_array,vmin=vmin,vmax=vmax)
+    plt.colorbar()
+    plt.show()
+
+def sheet_pizza(array, nx, nz): #splits the 2D array into smaller tiles (for MPI purposes)
+    ntilesrow = int(np.sqrt(ntiles))  # We want a 4x4 grid
+    tile_size_x = int(nx / ntilesrow)  # Size of each tile in x dimension
+    tile_size_z = int(nz / ntilesrow)  # Size of each tile in z dimension
+        
+    tile_array = np.ones((tile_size_x, tile_size_z, ntiles))
+
+    tile_num = 0
+    for m in range(ntilesrow):
+        for n in range(ntilesrow):
+            x_start = m * tile_size_x
+            x_end = (m + 1) * tile_size_x
+            z_start = n * tile_size_z
+            z_end = (n + 1) * tile_size_z
+
+            tile_array[:, :, tile_num] = array[x_start:x_end, z_start:z_end]
+
+            tile_num += 1
+    return tile_array
+
+def cell_subplots(tile_array,ntilesrow,vmin=None,vmax=None): #creates a grid of subplots representing each tile in tile_array
+    fig,axes = plt.subplots(ntilesrow, ntilesrow, figsize=(10, 10))
+    for i in range(ntiles):
+        target_row = i // ntilesrow
+        target_col = i % ntilesrow
+
+        axes[target_row, target_col].imshow(tile_array[:, :, i], cmap='viridis',vmin=vmin,vmax=vmax)
+    plt.tight_layout()
+    plt.show()
+    return
+
+def fill_gu(current_cell, target_cell, direction): #supplementary function for "ghost_cell" function
+    if direction == "above":
+        current_cell[ngu:-ngu, :ngu] = target_cell[ngu:-ngu, -2*ngu:-ngu]
+    if direction == "below":
+        current_cell[ngu:-ngu, -ngu:] = target_cell[ngu:-ngu, ngu:2*ngu]
+    if direction == "right":
+        current_cell[-ngu:, ngu:-ngu] = target_cell[ngu:2*ngu, ngu:-ngu]
+    if direction == "left":
+        current_cell[:ngu, ngu:-ngu] = target_cell[-2*ngu:-ngu, ngu:-ngu]
+    else:
+        print("bad direction, try again")
+    return current_cell
+
+def ghost_cell(tile_array): #fills the ghost cells for all tiles in tile_array using values from neighboring tiles
+    ntiles = len(tile_array[0, 0, :]) #look at how big the third dimension of tile array is (each xy slice is 1 tile, and there are "ntiles" of these slices in z)
+    gu_array = np.zeros((len(tile_array[:, 0, 0]) + 2 * ngu, len(tile_array[:, 0, 0]) + 2 * ngu, ntiles)) #initializes an empty array that's larger than before (space for ghost cells)
+    for tilenum in range(ntiles): #fill known values so zeros are only on the outer two cells of the arrays (these are the ghost cells)
+        gu_array[ngu:-ngu, ngu:-ngu, tilenum] = tile_array[:, :, tilenum]  
+    for tilenum in range(ntiles): #loops through all the tiles and performs checks so that the ghost cells are filled in appropriately depending on their edge characteristics
+        if (tilenum % ntilesrow != 0):  # ∃ A TILE ABOVE THIS ONE
+            gu_array[:, :, tilenum] = fill_gu(gu_array[:, :, tilenum], gu_array[:, :, tilenum - 1], "above")
+        if (tilenum % ntilesrow != ntilesrow - 1):  # ∃ A TILE BELOW THIS ONE
+            gu_array[:, :, tilenum] = fill_gu(gu_array[:, :, tilenum], gu_array[:, :, tilenum + 1], "below")
+        if (tilenum - ntilesrow >= 0):  # ∃ A TILE TO THE LEFT OF THIS ONE
+            gu_array[:, :, tilenum] = fill_gu(gu_array[:, :, tilenum], gu_array[:, :, tilenum - ntilesrow], "left")
+        if (tilenum + ntilesrow < ntiles):  # ∃ A TILE TO THE RIGHT OF THIS ONE
+            gu_array[:, :, tilenum] = fill_gu(gu_array[:, :, tilenum], gu_array[:, :, tilenum + ntilesrow], "right")
+    return gu_array
+
+def zpinch_to_pizza(slice_array): #creates a 2D representation of a radially symmetric slice of a given target field
+    x = np.arange(-nx,nx,1)
+    y = np.arange(-nx,nx,1)
+    r = np.zeros((len(x)-1,len(y)-1))
+    for i in range(len(x)-1):
+        for j in range(len(y)-1):
+            r[i,j] = get_field_value(x[i],y[j],slice_array)
+    return r
+
+def create_pizza_arrays():
+    # Variable definitions
+    str_vars = [ #list of variables to be processed (∃ a function that pulls this from the vtk file. I know this because I probably wrote it at some point. but is it in this code? no. no it is not. But this explicit list was good enough for me at the time)
+        'Ion Density', 'Current Density', 'Electric Field', 'Electron Density',
+        'Electron Temperature', 'Electron Velocity', 'Grad Pe', 'Ion Temperature',
+        'Ion Velocity', 'Magnetic Field', 'eta x-direction', 'eta y-direction', 'eta z-direction'
+    ]
+    array = np.zeros((nz, 83, len(str_vars)*3))
+    pizza_array = np.zeros((nx*2-1, nx*2-1, len(str_vars)*3))
+    str_vars_w_component = []
+    counter = 0
+
+    for var in str_vars:
+        print(f"Processing: {var} (counter={counter})")
+        ndimensions, *components = string_to_array(var)
+        array[:,:,counter:counter+3] = np.stack(components, axis=2)
+
+        if ndimensions == 1: #if the variable is a scalar
+            slice_array = array[int(nz/2),:,counter]
+            pizza_array[:,:,counter] = zpinch_to_pizza(slice_array)
+            str_vars_w_component.append(f"{var}—{counter}")
+            counter += 1
+        elif ndimensions == 3: #if the variable is a vector
+            for i, component in enumerate(['x', 'y', 'z']):
+                slice_array = array[int(nz/2),:,counter+i]
+                pizza_array[:,:,counter+i] = zpinch_to_pizza(slice_array)
+                str_vars_w_component.append(f"{var}_{component}—{counter+i}")
+            counter += 3
+
+    print("Components created:", str_vars_w_component)
+    return array, pizza_array, str_vars_w_component
+
+array, pizza_array, str_vars_w_component = create_pizza_arrays()
+
+##########################
+# RECOVER Qin VARIABLES #
+##########################
+Qin_vars = ['rh','mx','my','mz','en','bx','by','bz','ex','ey','ez',
+            'jx','jy','jz','et','ne','ep','etax','dpx','dpy','etay','etaz']
+
+Qin_pizza_array = np.zeros((len(pizza_array[:,0,0]), len(pizza_array[0,:,0]), len(Qin_vars)))
+"""REASSIGNING VARIABLES TO BE DIMENSIONLESS"""
+Qin_pizza_array[:,:,0] = pizza_array[:,:,0]/n0                  # rh (ion density)
+Qin_pizza_array[:,:,15] = pizza_array[:,:,7]/n0                 # ne (electron density)
+Qin_pizza_array[:,:,11:14] = pizza_array[:,:,1:4]/j0           # jx, jy, jz
+Qin_pizza_array[:,:,8:11] = pizza_array[:,:,4:7]/e0            # ex, ey, ez
+Qin_pizza_array[:,:,17] = pizza_array[:,:,22]/eta0             # etax
+Qin_pizza_array[:,:,20:22] = pizza_array[:,:,23:25]/eta0       # etay, etaz
+Qin_pizza_array[:,:,5:8] = pizza_array[:,:,19:22]/b0          # bx, by, bz
+Qin_pizza_array[:,:,1:4] = pizza_array[:,:,16:19]*pizza_array[:,:,0]/n0/v0  # mx, my, mz
+Qin_pizza_array[:,:,4] = pizza_array[:,:,15]*pizza_array[:,:,0]/n0/p0       # en (ion internal energy)
+Qin_pizza_array[:,:,16] = pizza_array[:,:,8]*pizza_array[:,:,7]/te0         # ep (electron pressure)
+Qin_pizza_array[:,:,14] = pizza_array[:,:,8]*pizza_array[:,:,7]/n0/p0       # et (electron total energy)
+Qin_pizza_array[:,:,18:20] = pizza_array[:,:,12:14]*L0/p0                   # dpx, dpy
+
+if plot_pizzas == True:
+    n = len(array[0,0,:])
+    nrows = int(np.ceil(np.sqrt(n)))
+    ncols = int(np.ceil(n / nrows))
+    
+    fig, axes = plt.subplots(nrows, ncols, figsize=(15, 15))
+    axes = axes.flatten()
+    
+    for i, var in enumerate(Qin_vars):
+        axes[i].imshow(Qin_pizza_array[:,:,i])
+        axes[i].set_title(var)
+        axes[i].axis('off')
+    
+    # Remove empty subplots
+    for j in range(i+1, len(axes)):
+        fig.delaxes(axes[j])
+    
+    plt.tight_layout()
+    plt.show()
+
+for i in range(len(Qin_pizza_array[0,0,:])): #loop through all the variables and save them as dat files
+    slice = Qin_pizza_array[nx-1:2*nx-1,nx-1,i]
+    upsampled_slice = linear_upsample(slice, scale_factor)
+    
+    # Initialize arrays on first iteration
+    if i == 0:
+        nx_us = len(upsampled_slice)
+        dl_us = rlength_PERSEUS/nx_us
+        x1 = int(x_chosen-(32*wavelength/dl_us))
+        x2 = int(x_chosen+(32*wavelength/dl_us))
+        y1 = int(y_chosen-(32*wavelength/dl_us))
+        y2 = int(y_chosen+(32*wavelength/dl_us))
+        boundaries = (x1, x2, y1, y2)
+        upsampled_pizza = bring_your_own_pizza(upsampled_slice, *boundaries, windowed=True)
+        tile_array = sheet_pizza(upsampled_pizza, np.shape(upsampled_pizza)[0], np.shape(upsampled_pizza)[1])
+        array_with_gus = ghost_cell(tile_array)
+    
+    # Save tiles as dat files if requested
+    if convert_to_dat_file:
+        save_tiles_in_log_form = False
+        for current_tile in range(ntiles):
+            mpi_x = current_tile // ntilesrow
+            mpi_y = current_tile % ntilesrow
+            filename = f'radial_slice_tile_{mpi_x+1}_{mpi_y+1}_{Qin_vars[i]}.dat'
+            
+            dat_array = (np.log10(array_with_gus[:,:,current_tile]) if save_tiles_in_log_form 
+                        else array_with_gus[:,:,current_tile])
+            
+            np.savetxt(f"{save_directory}{filename}", dat_array, fmt=f'%.{truncate_to}e')
+            
+            if (mpi_x == 7 and mpi_y == 7):
+                print(f"Variable {Qin_vars[i]} Saved Successfully!")
+
+if plot_upsampled_pizzas == True:
+    n = len(Qin_vars)
+    nrows = int(np.ceil(np.sqrt(n)))
+    ncols = int(np.ceil(n / nrows))
+
+    fig, axes = plt.subplots(nrows, ncols, figsize=(15, 15))
+    axes = axes.flatten()
+
+    counter = 0
+    for i, var in enumerate(Qin_vars):
+        axes[i].imshow(pizza_array[:,:,counter])
+        axes[i].set_title(var)
+        axes[i].axis('off')
+        counter += 1
+
+    # Remove empty subplots if any
+    for j in range(i+1, len(axes)):
+        fig.delaxes(axes[j])
+
+    plt.tight_layout()
+    plt.show()</code></pre>
+    </div>
+
+    <!-- Prism JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>
