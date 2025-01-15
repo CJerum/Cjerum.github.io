@@ -1,7 +1,6 @@
-<svg width="1114pt" height="1231pt" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:ev="http://www.w3.org/2001/xml-events" style="overflow: hidden; "><g id="viewport-20250112040200206" class="svg-pan-zoom_viewport" transform="matrix(1.1773351964208016,0,0,1.1773351964208016,-239.44501762573984,-242.77366007589967)" style="transform: matrix(1.17734, 0, 0, 1.17734, -239.445, -242.774);">
-<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 1227.2)">
-<title>PowerSystem</title>
-<polygon fill="white" stroke="none" points="-4,4 -4,-1227.2 1110,-1227.2 1110,4 -4,4"></polygon>
+`<g id="graph0" class="graph" transform="translate(4 1227.2)">
+  <title>PowerSystem</title>
+  <polygon fill="white" stroke="none" points="-4,4 -4,-1227.2 1110,-1227.2 1110,4 -4,4"></polygon>
 <g id="clust1" class="cluster">
 <title>cluster_caps</title>
 <polygon fill="#f0f8ff" stroke="black" points="108,-958.4 108,-1035.2 514,-1035.2 514,-958.4 108,-958.4"></polygon>
@@ -745,4 +744,4 @@
 <polygon fill="black" stroke="black" points="381.44,-147.44 386.54,-138.16 376.76,-142.23 381.44,-147.44"></polygon>
 </g>
 </g>
-</g></svg>
+</g></svg>            </g>`;
