@@ -1,0 +1,1788 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cole Jerum - SULI Application Portfolio</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #2d3748;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: #4a5568;
+            margin: 5px 0;
+        }
+
+        .card {
+          text-align: left;
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border: 1px solid #e2e8f0;
+        }
+            .nav-buttons {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-button {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+            padding: 4px 8px;
+            transition: color 0.2s;
+        }
+
+        .nav-button:hover {
+            color: #000;
+        }
+            .title-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .title-text h2 {
+            margin: 0;
+            color: #2c3e50;
+        }
+
+        .title-text p {
+            margin: 5px 0 0 0;
+            font-size: 0.9em;
+            color: #666;
+            font-style: italic;
+        }
+        .card-title {
+            font-size: 1.5rem;
+            color: #2d3748;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        .card-subtitle {
+          text-align: left;
+            font-size: 1.1rem;
+            color: #718096;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #2d3748;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+            color: #4a5568;
+        }
+
+        .button {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .image-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .image-caption {
+            font-size: 0.9rem;
+            color: #718096;
+            margin-top: 8px;
+        }
+
+        .svg-container {
+            position: relative;
+            width: 100%;
+            height: 600px;
+            overflow: hidden;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+        
+        .diagram-legend {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 4px;
+        }
+        
+        .zoom-controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 5px;
+            border-radius: 4px;
+        }
+        
+        .zoom-button {
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            margin: 2px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .zoom-button:hover {
+            background-color: #f0f0f0;
+        }
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .popup-container {
+            background: white;
+            width: 90%;
+            height: 90vh;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .popup-header {
+            padding: 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8f9fa;
+        }
+
+        .popup-header h2 {
+            margin: 0;
+            color: #2c3e50;
+        }
+
+        .close-button {
+            background: none;
+            text-align: left;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+            padding: 0 8px;
+        }
+
+        .close-button:hover {
+            color: #000;
+        }
+
+        .popup-content {
+            text-align: left;
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .code-column {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .explanation-column {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 20px;
+        }
+
+        .explanation-block {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .explanation-block ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        pre[class*="language-"] {
+            margin: 0;
+            border-radius: 4px;
+        }
+
+        code[class*="language-"] {
+            font-size: 14px;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 4px;
+            border-radius: 2px;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+</head>
+<body>
+        <header>
+            <h1 style="text-align: center; font-size: 4em; margin-bottom: 0;">Portfolio for SULI/LCLS Zoom</h1>
+            <p class="subtitle">Cole Jerum</p>
+            <p class="subtitle">University of Rochester '28</p>
+            <p class="subtitle">B.S. Physics & B.S. Neuroscience</p>
+        </header>
+        </div>
+        </div>
+        <p style="font-size: 3.0em; text-align: center; margin: 0; padding-bottom: 0;"><b>Notable Projects</b></p>
+        <div class="container">
+          <header>
+                <h1 style="margin-bottom: 0; border-bottom: 2px solid #3498db;">THOR</h1>
+                <p class="subtitle">(Teleoperated High-precision Optics Repositioner)</h2>
+<p style="font-size: 2.0em; text-align: center;"> <b></b></p>
+        <div class="card">
+            
+            <div class="section-title"></div>
+            <div class="image-container">
+                <img src="image9.png" alt=" " style="width: 450px; height: auto;">
+                <p class="image-caption">THOR Module attached to a kinematic lens/mirror mount</p>
+            </div>
+            <details>
+                <summary style="font-size: 1.4em;">What does the kinematic mount look like <i>without THOR?</i></summary>
+                <div class="image-container">
+                    <img src="image1.png" alt=" " style="width: 350px; height: auto;">
+                    <p class="image-caption"> </p>
+                </div>
+            </details>
+
+            <div class="image-container">
+                <br><br>
+                <img id="original" src="image8.png" style="width: auto; height: auto;">
+                <img id="motorized" src="image6.png" style="width: auto; height: 100%;" class="hidden">
+                <p id="original-caption" class="image-caption">Motorized Adjustment Mechanism</p>
+                <p id="motorized-caption" class="image-caption hidden">Motorized Adjustment Mechanism</p>
+                <button class="button" onclick="toggleImages()">Hide Kinematic Mount Adapter</button>
+            </div>
+            <details>
+                <summary style="font-size: 1.4em;">How does one <i>usually</i> adjust this kinematic mount?</summary>
+                <div class="image-container">
+                    <img src="image2.png" alt=" " style="width: auto; height: 400px;">
+                    <p class="image-caption"></p>
+                </div>
+            </details>
+            <div class="section">
+                <p style="font-size: 1.8em; margin-bottom: 5px; text-align: center;"><b>THOR—Control System</b></p>
+                <div style="display: flex; justify-content: space-between; gap: 20px;"></div>
+                <div style="flex: 1;">
+                  <h2 style="margin-top: 0;">PCB Layout (2D)</h2>
+                  <img src="V2PCB_2D.png" alt="2D PCB Layout" class="project-image" style="width: 100%;">
+                  <p class="caption">2D PCB layout showing component placement and routing</p>
+                </div>
+                
+                <div style="flex: 1;">
+                  <h2>PCB Layout (3D)</h2>
+                  <img src="V2PCB_3D.png" alt="3D PCB Rendering" class="project-image" style="width: 100%;">
+                  <p class="caption">3D rendering of the 2D PCB layout</p>
+                </div>
+              </div>
+          </div>            
+            <div class="svg-container" id="svgContainer">
+                <div class="diagram-legend">
+                  <div class="legend-item" style="border-bottom: 1px solid #ccc; padding-bottom: 8px; margin-bottom: 8px;">
+                    <span><b>PCB Diagram</b><br>
+                    Mouse-wheel to zoom in/out<br>
+                    Click-and-drag LMB to pan</span>
+                  </div>
+                  
+                </div>
+            </div>
+            <br></br>
+        </div>
+    </div>
+
+    <br> </br>
+
+        <div class="container">
+              <h1 style="margin-bottom: 0; border-bottom: 2px solid #3498db; text-align: center;">PERSEUS</h1>
+              <p class="subtitle" style="text-align: center;">(<b>P</b>hysics of an <b>E</b>xtended-mhd <b>R</b>elaxation <b>S</b>ystem using <b>E</b>fficient <b>U</b>pwind <b>S</b>cheme)</h2>
+
+        <div class="card">
+          <h2 style="text-align: left; font-size: 1.6em;">Background</h2>
+          <p>PERSEUS is a single-fluid extended magnetohydrodynamics (xMHD) code that treats the generalized Ohm's law as an evolution equation. By treating the dJ/dt term implicitly in the evolution equations, PERSEUS can capture electron dynamics while taking timesteps characteristic of ion effects. I've found working with PERSEUS to be incredibly interesting, and would be happy to say more about what it can do Thursday if you're interested.</p>
+            <h2 style="text-align: left; font-size: 1.6em;">My Work</h2>
+            <p>My contributions to PERSEUS include implementing directional resistivity (prev. η was assumed isotropic) and developing a method to load radially symmetric profiles from previous simulation timesteps, enabling studies of laser-plasma interactions (LPIs) in z-pinches. This wouldn't have been possible without  James Young, though, who both assisted me greatly in getting here and was the one to implement lasers into PERSEUS in the first place.</p>
+            <div style="text-align: center;">
+              <p style="font-size: 1.4em;"><button class="show-code-doc" style="background-color: #3498db; border: none; color: white; padding: 10px 12px; text-align: center; text-decoration: none; display: inline-block;font-size: 16px; margin: 2px 2px; cursor: pointer; border-radius: 4px; transition: background-color 0.3s; ">View My Code Documentation</button>
+            </div>
+            <h2 style="text-align: left; font-size: 1.6em;">My Simulation Results</h2>
+            <p>This is the first time I'm seeing an EM simulation of substance (it has been a journey to get to this point :') ). I'm looking forward to analyzing this data soon, though; Working on the data processing code in python.</p>
+            <div class="image-container">
+                <video width="100%" height="auto" controls>
+                    <source src="movie_1_15.mp4" type="video/mp4">
+                </video>
+                <p class="image-caption">Magnitude of E-field. tf=6e-13 sec (600 fs)</p>
+                <image src="ion_temp.png" alt=" " style="width: 450px; height: auto;">
+                <p class="image-caption">Ion Temperature at timestep=46(out of 51). Though the electric field looks promising (for the most part), something is definitely wrong here... Some artifacts in charge density as well (not pictured here)</p>
+
+            </div>
+          </div>
+          <div class="popup-overlay" style="display: none;">
+            <div class="popup-container">
+                <div class="popup-header">
+                    <h2>Z-Pinch Code Documentation</h2> This program is too long to fix all of my silly comments and odd function names, so I will just leave them in. I hope some of them are as amusing to you as they are to me.
+                    <button class="close-button">&times;</button>
+                </div>
+                <div class="popup-content">
+                    <div class="code-column">
+<pre><code class="language-python">  from read_vtk import *
+  from read_vtk import mesh
+  import cv2 
+  from scipy.interpolate import CubicSpline, interp1d
+  import matplotlib.pyplot as plt
+  
+  ####################
+  # DOMAIN VARIABLES #
+  ####################
+  """DEPENDENT ON YOUR SIMULATION'S (PERSEUS) PARAMETERS"""
+  ngu = 2
+  nx = 161
+  nz = 545
+  wavelength = 532e-9  
+  rlength_PERSEUS = 1e-3 
+  zlength_PERSEUS = 3.375e-3  
+  
+  """INDEPENDENT DOMAIN VARIABLES"""
+  ntiles = 64  
+  ntilesrow = 8
+  target_resolution = wavelength/30  
+  dl = target_resolution  # second definition of the same variable, because I cannot decide what to name it.
+  
+  """DEPENDENT DOMAIN VARIABLES"""
+  dl_PERSEUS = rlength_PERSEUS/nx
+  scale_factor = dl_PERSEUS/dl
+  slice_index = int(.5*nz) #the index of the slice you want to analyze (in the z direction)
+  """SWITCH VARIABLES"""
+  plot_x_pinch = False
+  plot_tiles = False
+  plot_pizza = False
+  plot_rh_i = False #plot the original z-pinch
+  print_boundary_corner_coordinates = True #prints x1,x2,y1,y2 for the upsampled window
+  plot_boundary_box_location = False 
+  convert_to_dat_file = True #determines if the tiles get saved as dat files at the end
+  plot_pizzas = False
+  plot_upsampled_pizzas = False
+  convert_to_dat_file = True
+  
+  
+  ########################
+  # FUNCTION DEFINITIONS #
+  ########################
+  def get_field_value(x,y,slice_array): #gets the value of a field at a given radial distance from the center of the slice
+      x = np.float64(x)
+      y = np.float64(y)
+      rval = np.sqrt(x**2 + y**2)
+      rval = int(rval)
+      if rval >= len(slice_array):
+          value = np.min(slice_array)
+      else:
+          value = slice_array[rval]
+      return value
+  
+  
+  def circle_pizza(target_field): #creates a 2D representation of a radially symmetric slice of a given target field
+      smesh = unstructured_to_structured(mesh, target_field)
+      nx, nz, nu = smesh.dimensions
+      print(nx,nz)
+      Fy = get_mesh_subset(smesh, [0,nx], [0,nz], target_field)
+      print(np.shape(Fy))
+      slice_array = Fy[slice_index,:]
+      #slice_array = np.log(slice_array)/np.log(10) #CC comment this line out to turn off log of ion density
+      x = np.arange(-nx,nx,1)
+      y = np.arange(-nx,nx,1)
+      r = np.zeros((len(x)-1,len(y)-1))
+      for i in range(len(x)-1):
+          for j in range(len(y)-1):
+              r[i,j] = get_field_value(x[i],y[j],slice_array)
+      return r
+  
+  def bring_your_own_pizza(slice_array, *boundaries,windowed): #generates a 2D (radially symmetric) array based on the given slice array (1D array where slice[0] is the center of the 2d disc))
+      if windowed == True:
+          x1 = boundaries[0]
+          x2 = boundaries[1]
+          y1 = boundaries[2]
+          y2 = boundaries[3]
+          window_pizza = np.zeros([x2-x1,y2-y1])
+          for i in range(x2-x1):
+              for j in range(y2-y1):
+                  windowed-slice
+                  window_pizza[i,j] = get_field_value(x1+i,y2+j,upsampled_slice)        
+          return window_pizza    
+      else:
+          x = np.arange(-len(slice_array),len(slice_array),1)
+          y = np.arange(-len(slice_array),len(slice_array),1)
+          r = np.zeros((len(x)-1,len(y)-1))
+          for i in range(len(x)-1):
+              for j in range(len(y)-1):
+                  r[i,j] = get_field_value(x[i],y[j],slice_array)
+      return r
+  
+  def linear_upsample(slice_array, scale_factor):
+      original_indices = np.arange(len(slice_array))
+      new_length = int(len(slice_array) * scale_factor)
+      new_indices = np.linspace(0, len(slice_array) - 1, new_length)
+      interp_func = interp1d(original_indices, slice_array, kind='linear', fill_value="extrapolate")
+      upsampled_slice = interp_func(new_indices)
+      return upsampled_slice
+  
+  def colorbar_plot(target_field,target_array,vmin=None,vmax=None):
+      plt.title(f"{target_field} at z_index={slice_index} & t={time_analyze}")
+      plt.imshow(target_array,vmin=vmin,vmax=vmax)
+      plt.colorbar()
+      plt.show()
+  
+  def sheet_pizza(array, nx, nz): #splits the 2D array into smaller tiles (for MPI purposes)
+      ntilesrow = int(np.sqrt(ntiles))  # We want a 4x4 grid
+      tile_size_x = int(nx / ntilesrow)  # Size of each tile in x dimension
+      tile_size_z = int(nz / ntilesrow)  # Size of each tile in z dimension
+          
+      tile_array = np.ones((tile_size_x, tile_size_z, ntiles))
+  
+      tile_num = 0
+      for m in range(ntilesrow):
+          for n in range(ntilesrow):
+              x_start = m * tile_size_x
+              x_end = (m + 1) * tile_size_x
+              z_start = n * tile_size_z
+              z_end = (n + 1) * tile_size_z
+  
+              tile_array[:, :, tile_num] = array[x_start:x_end, z_start:z_end]
+  
+              tile_num += 1
+      return tile_array
+  
+  def cell_subplots(tile_array,ntilesrow,vmin=None,vmax=None): #creates a grid of subplots representing each tile in tile_array
+      fig,axes = plt.subplots(ntilesrow, ntilesrow, figsize=(10, 10))
+      for i in range(ntiles):
+          target_row = i // ntilesrow
+          target_col = i % ntilesrow
+  
+          axes[target_row, target_col].imshow(tile_array[:, :, i], cmap='viridis',vmin=vmin,vmax=vmax)
+      plt.tight_layout()
+      plt.show()
+      return
+  
+  def fill_gu(current_cell, target_cell, direction): #supplementary function for "ghost_cell" function
+      if direction == "above":
+          current_cell[ngu:-ngu, :ngu] = target_cell[ngu:-ngu, -2*ngu:-ngu]
+      if direction == "below":
+          current_cell[ngu:-ngu, -ngu:] = target_cell[ngu:-ngu, ngu:2*ngu]
+      if direction == "right":
+          current_cell[-ngu:, ngu:-ngu] = target_cell[ngu:2*ngu, ngu:-ngu]
+      if direction == "left":
+          current_cell[:ngu, ngu:-ngu] = target_cell[-2*ngu:-ngu, ngu:-ngu]
+      else:
+          print("bad direction, try again")
+      return current_cell
+  
+  def ghost_cell(tile_array): #fills the ghost cells for all tiles in tile_array using values from neighboring tiles
+      ntiles = len(tile_array[0, 0, :]) #look at how big the third dimension of tile array is (each xy slice is 1 tile, and there are "ntiles" of these slices in z)
+      gu_array = np.zeros((len(tile_array[:, 0, 0]) + 2 * ngu, len(tile_array[:, 0, 0]) + 2 * ngu, ntiles)) #initializes an empty array that's larger than before (space for ghost cells)
+      for tilenum in range(ntiles): #fill known values so zeros are only on the outer two cells of the arrays (these are the ghost cells)
+          gu_array[ngu:-ngu, ngu:-ngu, tilenum] = tile_array[:, :, tilenum]  
+      for tilenum in range(ntiles): #loops through all the tiles and performs checks so that the ghost cells are filled in appropriately depending on their edge characteristics
+          if (tilenum % ntilesrow != 0):  # ∃ A TILE ABOVE THIS ONE
+              gu_array[:, :, tilenum] = fill_gu(gu_array[:, :, tilenum], gu_array[:, :, tilenum - 1], "above")
+          if (tilenum % ntilesrow != ntilesrow - 1):  # ∃ A TILE BELOW THIS ONE
+              gu_array[:, :, tilenum] = fill_gu(gu_array[:, :, tilenum], gu_array[:, :, tilenum + 1], "below")
+          if (tilenum - ntilesrow >= 0):  # ∃ A TILE TO THE LEFT OF THIS ONE
+              gu_array[:, :, tilenum] = fill_gu(gu_array[:, :, tilenum], gu_array[:, :, tilenum - ntilesrow], "left")
+          if (tilenum + ntilesrow < ntiles):  # ∃ A TILE TO THE RIGHT OF THIS ONE
+              gu_array[:, :, tilenum] = fill_gu(gu_array[:, :, tilenum], gu_array[:, :, tilenum + ntilesrow], "right")
+      return gu_array
+  
+  def zpinch_to_pizza(slice_array): #creates a 2D representation of a radially symmetric slice of a given target field
+      x = np.arange(-nx,nx,1)
+      y = np.arange(-nx,nx,1)
+      r = np.zeros((len(x)-1,len(y)-1))
+      for i in range(len(x)-1):
+          for j in range(len(y)-1):
+              r[i,j] = get_field_value(x[i],y[j],slice_array)
+      return r
+  
+  def create_pizza_arrays():
+      # Variable definitions
+      str_vars = [ #list of variables to be processed (∃ a function that pulls this from the vtk file. I know this because I probably wrote it at some point. but is it in this code? no. no it is not. But this explicit list was good enough for me at the time)
+          'Ion Density', 'Current Density', 'Electric Field', 'Electron Density',
+          'Electron Temperature', 'Electron Velocity', 'Grad Pe', 'Ion Temperature',
+          'Ion Velocity', 'Magnetic Field', 'eta x-direction', 'eta y-direction', 'eta z-direction'
+      ]
+      array = np.zeros((nz, 83, len(str_vars)*3))
+      pizza_array = np.zeros((nx*2-1, nx*2-1, len(str_vars)*3))
+      str_vars_w_component = []
+      counter = 0
+  
+      for var in str_vars:
+          print(f"Processing: {var} (counter={counter})")
+          ndimensions, *components = string_to_array(var)
+          array[:,:,counter:counter+3] = np.stack(components, axis=2)
+  
+          if ndimensions == 1: #if the variable is a scalar
+              slice_array = array[int(nz/2),:,counter]
+              pizza_array[:,:,counter] = zpinch_to_pizza(slice_array)
+              str_vars_w_component.append(f"{var}—{counter}")
+              counter += 1
+          elif ndimensions == 3: #if the variable is a vector
+              for i, component in enumerate(['x', 'y', 'z']):
+                  slice_array = array[int(nz/2),:,counter+i]
+                  pizza_array[:,:,counter+i] = zpinch_to_pizza(slice_array)
+                  str_vars_w_component.append(f"{var}_{component}—{counter+i}")
+              counter += 3
+  
+      print("Components created:", str_vars_w_component)
+      return array, pizza_array, str_vars_w_component
+  
+  array, pizza_array, str_vars_w_component = create_pizza_arrays()
+  
+  ##########################
+  # RECOVER Qin VARIABLES #
+  ##########################
+  Qin_vars = ['rh','mx','my','mz','en','bx','by','bz','ex','ey','ez',
+              'jx','jy','jz','et','ne','ep','etax','dpx','dpy','etay','etaz']
+  
+  Qin_pizza_array = np.zeros((len(pizza_array[:,0,0]), len(pizza_array[0,:,0]), len(Qin_vars)))
+  """REASSIGNING VARIABLES TO BE DIMENSIONLESS"""
+  Qin_pizza_array[:,:,0] = pizza_array[:,:,0]/n0                  # rh (ion density)
+  Qin_pizza_array[:,:,15] = pizza_array[:,:,7]/n0                 # ne (electron density)
+  Qin_pizza_array[:,:,11:14] = pizza_array[:,:,1:4]/j0           # jx, jy, jz
+  Qin_pizza_array[:,:,8:11] = pizza_array[:,:,4:7]/e0            # ex, ey, ez
+  Qin_pizza_array[:,:,17] = pizza_array[:,:,22]/eta0             # etax
+  Qin_pizza_array[:,:,20:22] = pizza_array[:,:,23:25]/eta0       # etay, etaz
+  Qin_pizza_array[:,:,5:8] = pizza_array[:,:,19:22]/b0          # bx, by, bz
+  Qin_pizza_array[:,:,1:4] = pizza_array[:,:,16:19]*pizza_array[:,:,0]/n0/v0  # mx, my, mz
+  Qin_pizza_array[:,:,4] = pizza_array[:,:,15]*pizza_array[:,:,0]/n0/p0       # en (ion internal energy)
+  Qin_pizza_array[:,:,16] = pizza_array[:,:,8]*pizza_array[:,:,7]/te0         # ep (electron pressure)
+  Qin_pizza_array[:,:,14] = pizza_array[:,:,8]*pizza_array[:,:,7]/n0/p0       # et (electron total energy)
+  Qin_pizza_array[:,:,18:20] = pizza_array[:,:,12:14]*L0/p0                   # dpx, dpy
+  
+  if plot_pizzas == True:
+      n = len(array[0,0,:])
+      nrows = int(np.ceil(np.sqrt(n)))
+      ncols = int(np.ceil(n / nrows))
+      
+      fig, axes = plt.subplots(nrows, ncols, figsize=(15, 15))
+      axes = axes.flatten()
+      
+      for i, var in enumerate(Qin_vars):
+          axes[i].imshow(Qin_pizza_array[:,:,i])
+          axes[i].set_title(var)
+          axes[i].axis('off')
+      
+      # Remove empty subplots
+      for j in range(i+1, len(axes)):
+          fig.delaxes(axes[j])
+      
+      plt.tight_layout()
+      plt.show()
+  
+  for i in range(len(Qin_pizza_array[0,0,:])): #loop through all the variables and save them as dat files
+      slice = Qin_pizza_array[nx-1:2*nx-1,nx-1,i]
+      upsampled_slice = linear_upsample(slice, scale_factor)
+      
+      # Initialize arrays on first iteration
+      if i == 0:
+          nx_us = len(upsampled_slice)
+          dl_us = rlength_PERSEUS/nx_us
+          x1 = int(x_chosen-(32*wavelength/dl_us))
+          x2 = int(x_chosen+(32*wavelength/dl_us))
+          y1 = int(y_chosen-(32*wavelength/dl_us))
+          y2 = int(y_chosen+(32*wavelength/dl_us))
+          boundaries = (x1, x2, y1, y2)
+          upsampled_pizza = bring_your_own_pizza(upsampled_slice, *boundaries, windowed=True)
+          tile_array = sheet_pizza(upsampled_pizza, np.shape(upsampled_pizza)[0], np.shape(upsampled_pizza)[1])
+          array_with_gus = ghost_cell(tile_array)
+      
+      # Save tiles as dat files if requested
+      if convert_to_dat_file:
+          save_tiles_in_log_form = False
+          for current_tile in range(ntiles):
+              mpi_x = current_tile // ntilesrow
+              mpi_y = current_tile % ntilesrow
+              filename = f'radial_slice_tile_{mpi_x+1}_{mpi_y+1}_{Qin_vars[i]}.dat'
+              
+              dat_array = (np.log10(array_with_gus[:,:,current_tile]) if save_tiles_in_log_form 
+                          else array_with_gus[:,:,current_tile])
+              
+              np.savetxt(f"{save_directory}{filename}", dat_array, fmt=f'%.{truncate_to}e')
+              
+              if (mpi_x == 7 and mpi_y == 7):
+                  print(f"Variable {Qin_vars[i]} Saved Successfully!")
+  
+  if plot_upsampled_pizzas == True:
+      n = len(Qin_vars)
+      nrows = int(np.ceil(np.sqrt(n)))
+      ncols = int(np.ceil(n / nrows))
+  
+      fig, axes = plt.subplots(nrows, ncols, figsize=(15, 15))
+      axes = axes.flatten()
+  
+      counter = 0
+      for i, var in enumerate(Qin_vars):
+          axes[i].imshow(pizza_array[:,:,counter])
+          axes[i].set_title(var)
+          axes[i].axis('off')
+          counter += 1
+  
+      # Remove empty subplots if any
+      for j in range(i+1, len(axes)):
+          fig.delaxes(axes[j])
+  
+      plt.tight_layout()
+      plt.show()                        
+      </code></pre>
+                    </div>
+                        <div class="explanation-column">
+                      <div class="explanation-block">
+                        <h2 class="section-title">Introduction</h2>
+                        <p>This code takes the data from a timestep of a 2D z-pinch simulation (ran in PERSEUS) and transforms it into a wire cross-section by taking a (1D) radial slice, converting it into a circular cross-section , upsampling it for better resolution (λ/30), and splitting it into 64 tiles with ghost cells to be passed back into PERSEUS.</p>
+                        <ol>
+                            <li>Reading and processing simulation data</li>
+                            <li>Creating circular cross-sections</li>
+                            <li>Upsampling for higher resolution</li>
+                            <li>Splitting into tiles for parallel processing</li>
+                        </ol>
+                    </div>
+
+                    <div class="explanation-block">
+                        <h2 class="section-title">Domain Variables</h2>
+                        <p>The code starts by defining simulation parameters:</p>
+                        <ul>
+                            <li><span class="highlight">nx</span>: Radius of the simulation domain (161 cells)</li>
+                            <li><span class="highlight">wavelength</span>: Laser λ (532nm)</li>
+                            <li><span class="highlight">dl</span>: Target resolution (λ/30)</li>
+                            <li><span class="highlight">ntiles</span>: Number of MPI tiles (8x8⇒64)</li>
+                            <li><span class="highlight">scale_factor</span>: Resolution scaling factor (~300)</li>
+                        </ul>
+                    </div>
+
+                    <div class="explanation-block">
+                        <h2 class="section-title">Core Functions</h2>
+                        <h3>get_field_value()</h3>
+                        <p>Converts Cartesian coordinates (x,y) to radial distances and retrieves the corresponding field value. This is crucial for maintaining radial symmetry in the simulation.</p>
+                        
+                        <h3>bring_your_own_pizza()</h3>
+                        <p>Creates a 2D circular cross-section from a 1D radial profile. Can either create a full cross-section or a windowed subset.</p>
+                        
+                        <h3>linear_upsample()</h3>
+                        <p>Increases resolution of the data using linear interpolation. This is essential for matching the required resolution for laser-plasma interactions (λ/30).</p>
+                    </div>
+
+                    <div class="explanation-block">
+                      <h2 class="section-title">Variable Processing</h2>
+                      <p>The code processes various physical quantities:</p>
+                      • Densities (ion, electron)
+                      • Fields (electric, magnetic) 
+                      • Currents and velocities
+                      • Temperatures and pressures
+                        <p>Each quantity is normalized according to PERSEUS conventions using characteristic scales (n0, b0, e0, etc.).</p>
+                    </div>
+
+                    <div class="explanation-block">
+                        <h2 class="section-title">Tiling System</h2>
+                        <p>The domain is split into 64 tiles (8×8 grid) for parallel processing (MPI). Each tile includes ghost cells for proper boundary handling between adjacent tiles. This enables efficient parallel computation in PERSEUS.</p>
+                    </div>                    
+                  </div>
+              </div>
+
+              <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-core.min.js"></script>
+              <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/autoloader/prism-autoloader.min.js"></script>
+              <script>
+                  // Close button functionality
+                  document.querySelector('.close-button').addEventListener('click', function() {
+                      document.querySelector('.popup-overlay').style.display = 'none';
+                  });
+          
+                  // Close on outside click
+                  document.querySelector('.popup-overlay').addEventListener('click', function(e) {
+                      if (e.target === this) {
+                          this.style.display = 'none';
+                      }
+                  });
+              </script>
+
+        
+          </body>
+          </html>
+          
+        </div>
+
+      </div>
+    </div>
+      <br> </br>
+    <div class="container">
+      <h1 style="margin-bottom: 0; border-bottom: 2px solid #3498db; text-align: center;">Plasma Inteferometry</h1>
+      The very first thing I did in the XSPL was to use an air-wedge shearing interferometer to record an interferogram of a laser-produced plasma spark—from which I was able to recover the plasma density; but unfortunately this plasma density was undetermined mod 2pi, as is always the case...</p> 
+      
+      This leads me to another (relatively new) active project of mine: φ unwrapping as a constrained optimization problem, utilizing THOR to achieve callibration of optics to measure the true optical derivative (the novel constraint). In the coming weeks, I'll be designing and running some proof-of-concept simulations in PERSEUS to gauge the success of this approach. If all goes according to plan, I'll present a talk or poster on this at RSPS (a conference for primarily undergrads in physics) in early march :).
+      
+
+
+
+    </div>     
+    <br> </br>
+    <p style="font-size: 3.0em; text-align: center;"> <b>Potential Connections to LCLS</b></p>
+
+        <div class="container">
+            <header>
+            <div class="card">
+                <div class="section-title">Relevant Research Experience</div>
+                <ul>
+                <li>THOR ⇒ Improve Hit-Rate/Minimize Background Noise Prevalent in SPI/SFX</li>
+                <li>PERSEUS ⇒ XFEL/XLO Optimization/Simulations</li>
+                <li>Plasma Interferometry ⇒ Coherent Diffraction Imaging</li>
+                
+            </ul>
+
+            <div class="section-title">Areas I'm Interested In</div>
+            <ul>
+                <li>SFX - particularly interested in advancing sample delivery and data collection methods</li>
+                <li>XFEL Diagnostics - applying plasma diagnostic experience to X-ray pulse characterization</li>
+                <li>X-ray Laser Oscillators (XLOs) - leveraging experience in automated optical alignment for beamline optimization</li>
+                <li>Computational Methods - extending simulation experience to X-ray diffraction analysis</li>
+            </ul>
+        </div>
+    </div>
+    <script>
+      // Get the button and popup elements
+      const showButton = document.querySelector('.show-code-doc');
+      const popup = document.querySelector('.popup-overlay');
+      const closeButton = document.querySelector('.close-button');
+
+      // Show popup when button is clicked
+      showButton.addEventListener('click', function() {
+          popup.style.display = 'flex';
+      });
+
+      // Hide popup when close button is clicked
+      closeButton.addEventListener('click', function() {
+          popup.style.display = 'none';
+      });
+
+      // Hide popup when clicking outside
+      popup.addEventListener('click', function(e) {
+          if (e.target === this) {
+              this.style.display = 'none';
+          }
+      });
+    </script>
+    <script>
+        // Image toggle functionality
+        function toggleImages() {
+            var original = document.getElementById('original');
+            var motorized = document.getElementById('motorized');
+            var originalCaption = document.getElementById('original-caption');
+            var motorizedCaption = document.getElementById('motorized-caption');
+            var button = document.querySelector('.button');
+            
+            if (original.classList.contains('hidden')) {
+                original.classList.remove('hidden');
+                motorized.classList.add('hidden');
+                originalCaption.classList.remove('hidden');
+                motorizedCaption.classList.add('hidden');
+                button.innerHTML = 'Hide Kinematic Mount Adapter';
+            } else {
+                original.classList.add('hidden');
+                motorized.classList.remove('hidden');
+                originalCaption.classList.add('hidden');
+                motorizedCaption.classList.remove('hidden');
+                button.innerHTML = 'Show Kinematic Mount Adapter';
+            }
+        }
+
+        // SVG viewer functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.getElementById('svgContainer');
+            
+            // Create SVG element with proper namespace
+            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svg.setAttribute('id', 'controlSvg');
+            svg.setAttribute('width', '100%');
+            svg.setAttribute('height', '100%');
+            svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+            
+            // Set viewBox to match the original SVG dimensions
+            svg.setAttribute('viewBox', '-4 4 1114 1231.2');
+            
+            // Set initial viewBox to show the entire diagram
+            const initialViewBox = { x: -10, y: -10, width: 1124, height: 1247.2 };
+            svg.setAttribute('viewBox', `${initialViewBox.x} ${initialViewBox.y} ${initialViewBox.width} ${initialViewBox.height}`);
+            
+            // Add the SVG content
+            svg.innerHTML = `<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 1227.2)">
+                <title>PowerSystem</title>
+                <polygon fill="white" stroke="none" points="-4,4 -4,-1227.2 1110,-1227.2 1110,4 -4,4"></polygon>
+<g id="clust1" class="cluster">
+<title>cluster_caps</title>
+<polygon fill="#f0f8ff" stroke="black" points="108,-958.4 108,-1035.2 514,-1035.2 514,-958.4 108,-958.4"></polygon>
+<text text-anchor="middle" x="311" y="-1018.6" font-family="Times,serif" font-size="14.00">Capacitor Bank</text>
+</g>
+<g id="clust2" class="cluster">
+<title>cluster_bc</title>
+<polygon fill="#ffe4e1" stroke="black" points="434,-801.6 434,-950.4 636,-950.4 636,-801.6 434,-801.6"></polygon>
+<text text-anchor="middle" x="535" y="-933.8" font-family="Times,serif" font-size="14.00">Buck Converter</text>
+</g>
+<g id="clust3" class="cluster">
+<title>cluster_zeta</title>
+<polygon fill="#e0ffff" stroke="black" points="470,-640 470,-793.6 612,-793.6 612,-640 470,-640"></polygon>
+<text text-anchor="middle" x="541" y="-777" font-family="Times,serif" font-size="14.00">RF TRANSCEIVER</text>
+</g>
+<g id="clust4" class="cluster">
+<title>cluster_q4</title>
+<polygon fill="#f0fff0" stroke="black" points="356,-483.2 356,-716.8 430,-716.8 430,-483.2 356,-483.2"></polygon>
+<text text-anchor="middle" x="393" y="-700.2" font-family="Times,serif" font-size="14.00">BJT 1</text>
+</g>
+<g id="clust5" class="cluster">
+<title>cluster_q12</title>
+<polygon fill="#fff0f0" stroke="black" points="356,-249.6 356,-475.2 430,-475.2 430,-249.6 356,-249.6"></polygon>
+<text text-anchor="middle" x="393" y="-458.6" font-family="Times,serif" font-size="14.00">JFET 1</text>
+</g>
+<g id="clust6" class="cluster">
+<title>cluster_drv1</title>
+<polygon fill="#e6e6fa" stroke="black" points="8,-8 8,-84.8 366,-84.8 366,-8 8,-8"></polygon>
+<text text-anchor="middle" x="187" y="-68.2" font-family="Times,serif" font-size="14.00">DRV8834 1</text>
+</g>
+<g id="clust7" class="cluster">
+<title>cluster_q1</title>
+<polygon fill="#f0fff0" stroke="black" points="620,-483.2 620,-716.8 694,-716.8 694,-483.2 620,-483.2"></polygon>
+<text text-anchor="middle" x="657" y="-700.2" font-family="Times,serif" font-size="14.00">BJT 2</text>
+</g>
+<g id="clust8" class="cluster">
+<title>cluster_q8</title>
+<polygon fill="#fff0f0" stroke="black" points="514,-164.8 514,-398.4 588,-398.4 588,-164.8 514,-164.8"></polygon>
+<text text-anchor="middle" x="551" y="-381.8" font-family="Times,serif" font-size="14.00">JFET 2</text>
+</g>
+<g id="clust9" class="cluster">
+<title>cluster_drv2</title>
+<polygon fill="#e6e6fa" stroke="black" points="374,-8 374,-84.8 732,-84.8 732,-8 374,-8"></polygon>
+<text text-anchor="middle" x="553" y="-68.2" font-family="Times,serif" font-size="14.00">DRV8834 2</text>
+</g>
+<g id="clust10" class="cluster">
+<title>cluster_q2</title>
+<polygon fill="#f0fff0" stroke="black" points="776,-568 776,-793.6 850,-793.6 850,-568 776,-568"></polygon>
+<text text-anchor="middle" x="813" y="-777" font-family="Times,serif" font-size="14.00">BJT 3A</text>
+</g>
+<g id="clust11" class="cluster">
+<title>cluster_q3</title>
+<polygon fill="#f0fff0" stroke="black" points="702,-321.6 702,-560 776,-560 776,-321.6 702,-321.6"></polygon>
+<text text-anchor="middle" x="739" y="-543.4" font-family="Times,serif" font-size="14.00">BJT 3B</text>
+</g>
+<g id="clust12" class="cluster">
+<title>cluster_drv3</title>
+<polygon fill="#e6e6fa" stroke="black" points="740,-8 740,-84.8 1098,-84.8 1098,-8 740,-8"></polygon>
+<text text-anchor="middle" x="919" y="-68.2" font-family="Times,serif" font-size="14.00">DRV8834 3</text>
+</g>
+<g id="clust13" class="cluster">
+<title>cluster_jk</title>
+<polygon fill="#ffe4b5" stroke="black" points="596,-92.8 596,-241.6 738,-241.6 738,-92.8 596,-92.8"></polygon>
+<text text-anchor="middle" x="667" y="-225" font-family="Times,serif" font-size="14.00">JK FLIP-FLOP</text>
+</g>
+<g id="clust14" class="cluster">
+<title>cluster_timer</title>
+<polygon fill="#dda0dd" stroke="black" points="270,-92.8 270,-241.6 476,-241.6 476,-92.8 270,-92.8"></polygon>
+<text text-anchor="middle" x="373" y="-225" font-family="Times,serif" font-size="14.00">555 TIMER</text>
+</g>
+<!-- LiPo -->
+<g id="node1" class="node">
+<title>LiPo</title>
+<polygon fill="#ffd700" stroke="black" points="299.46,-1223.2 214.54,-1223.2 214.54,-1187.2 299.46,-1187.2 299.46,-1223.2"></polygon>
+<text text-anchor="middle" x="257" y="-1202.2" font-family="Arial" font-size="10.00">LiPo BATTERY</text>
+</g>
+<!-- OR -->
+<g id="node3" class="node">
+<title>OR</title>
+<polygon fill="#e6e6fa" stroke="black" points="311,-1151.2 284,-1133.2 311,-1115.2 338,-1133.2 311,-1151.2"></polygon>
+<text text-anchor="middle" x="311" y="-1130.2" font-family="Arial" font-size="10.00">OR</text>
+</g>
+<!-- LiPo&#45;&gt;OR -->
+<g id="edge1" class="edge">
+<title>LiPo-&gt;OR</title>
+<path fill="none" stroke="black" d="M270.35,-1186.9C277.92,-1177.08 287.44,-1164.74 295.36,-1154.47"></path>
+<polygon fill="black" stroke="black" points="298.09,-1156.66 301.43,-1146.61 292.55,-1152.39 298.09,-1156.66"></polygon>
+</g>
+<!-- PS -->
+<g id="node2" class="node">
+<title>PS</title>
+<polygon fill="#ffd700" stroke="black" points="413.01,-1223.2 316.99,-1223.2 316.99,-1187.2 413.01,-1187.2 413.01,-1223.2"></polygon>
+<text text-anchor="middle" x="365" y="-1202.2" font-family="Arial" font-size="10.00">POWER SUPPLY</text>
+</g>
+<!-- PS&#45;&gt;OR -->
+<g id="edge2" class="edge">
+<title>PS-&gt;OR</title>
+<path fill="none" stroke="black" d="M351.65,-1186.9C344.08,-1177.08 334.56,-1164.74 326.64,-1154.47"></path>
+<polygon fill="black" stroke="black" points="329.45,-1152.39 320.57,-1146.61 323.91,-1156.66 329.45,-1152.39"></polygon>
+</g>
+<!-- PWR -->
+<g id="node4" class="node">
+<title>PWR</title>
+<polygon fill="#98fb98" stroke="black" points="348.17,-1079.2 273.83,-1079.2 273.83,-1043.2 348.17,-1043.2 348.17,-1079.2"></polygon>
+<text text-anchor="middle" x="311" y="-1058.2" font-family="Arial" font-size="10.00">11V POWER</text>
+</g>
+<!-- OR&#45;&gt;PWR -->
+<g id="edge3" class="edge">
+<title>OR-&gt;PWR</title>
+<path fill="none" stroke="black" d="M311,-1114.9C311,-1107.61 311,-1098.93 311,-1090.74"></path>
+<polygon fill="black" stroke="black" points="314.5,-1090.82 311,-1080.82 307.5,-1090.82 314.5,-1090.82"></polygon>
+</g>
+<!-- mF1 -->
+<g id="node5" class="node">
+<title>mF1</title>
+<polygon fill="white" stroke="black" points="200.18,-1002.4 115.82,-1002.4 115.82,-966.4 200.18,-966.4 200.18,-1002.4"></polygon>
+<text text-anchor="middle" x="158" y="-981.4" font-family="Arial" font-size="10.00">1 mF Capacitor</text>
+</g>
+<!-- PWR&#45;&gt;mF1 -->
+<g id="edge4" class="edge">
+<title>PWR-&gt;mF1</title>
+<path fill="none" stroke="black" d="M273.37,-1055.87C253.31,-1052.38 228.77,-1046.18 209,-1035.2 197.85,-1029.01 187.41,-1019.73 178.92,-1010.85"></path>
+<polygon fill="black" stroke="black" points="181.74,-1008.76 172.43,-1003.7 176.56,-1013.46 181.74,-1008.76"></polygon>
+</g>
+<!-- mF2 -->
+<g id="node6" class="node">
+<title>mF2</title>
+<polygon fill="white" stroke="black" points="302.18,-1002.4 217.82,-1002.4 217.82,-966.4 302.18,-966.4 302.18,-1002.4"></polygon>
+<text text-anchor="middle" x="260" y="-981.4" font-family="Arial" font-size="10.00">1 mF Capacitor</text>
+</g>
+<!-- PWR&#45;&gt;mF2 -->
+<g id="edge5" class="edge">
+<title>PWR-&gt;mF2</title>
+<path fill="none" stroke="black" d="M299.17,-1042.85C292.93,-1033.69 285.13,-1022.26 278.14,-1012.01"></path>
+<polygon fill="black" stroke="black" points="281.14,-1010.2 272.62,-1003.91 275.36,-1014.14 281.14,-1010.2"></polygon>
+</g>
+<!-- mF3 -->
+<g id="node7" class="node">
+<title>mF3</title>
+<polygon fill="white" stroke="black" points="506.18,-1002.4 421.82,-1002.4 421.82,-966.4 506.18,-966.4 506.18,-1002.4"></polygon>
+<text text-anchor="middle" x="464" y="-981.4" font-family="Arial" font-size="10.00">1 mF Capacitor</text>
+</g>
+<!-- PWR&#45;&gt;mF3 -->
+<g id="edge6" class="edge">
+<title>PWR-&gt;mF3</title>
+<path fill="none" stroke="black" d="M348.63,-1055.87C368.69,-1052.38 393.23,-1046.18 413,-1035.2 424.15,-1029.01 434.59,-1019.73 443.08,-1010.85"></path>
+<polygon fill="black" stroke="black" points="445.44,-1013.46 449.57,-1003.7 440.26,-1008.76 445.44,-1013.46"></polygon>
+</g>
+<!-- mF4 -->
+<g id="node8" class="node">
+<title>mF4</title>
+<polygon fill="white" stroke="black" points="404.18,-1002.4 319.82,-1002.4 319.82,-966.4 404.18,-966.4 404.18,-1002.4"></polygon>
+<text text-anchor="middle" x="362" y="-981.4" font-family="Arial" font-size="10.00">1 mF Capacitor</text>
+</g>
+<!-- PWR&#45;&gt;mF4 -->
+<g id="edge7" class="edge">
+<title>PWR-&gt;mF4</title>
+<path fill="none" stroke="black" d="M322.83,-1042.85C329.07,-1033.69 336.87,-1022.26 343.86,-1012.01"></path>
+<polygon fill="black" stroke="black" points="346.64,-1014.14 349.38,-1003.91 340.86,-1010.2 346.64,-1014.14"></polygon>
+</g>
+<!-- DRV1_PWR -->
+<g id="node24" class="node">
+<title>DRV1_PWR</title>
+<polygon fill="lightgrey" stroke="black" points="70,-52 16,-52 16,-16 70,-16 70,-52"></polygon>
+<text text-anchor="middle" x="43" y="-31" font-family="Arial" font-size="10.00">POWER</text>
+</g>
+<!-- mF1&#45;&gt;DRV1_PWR -->
+<g id="edge8" class="edge">
+<title>mF1-&gt;DRV1_PWR</title>
+<path fill="none" stroke="black" d="M151.79,-966.01C142.23,-937.64 125,-879.44 125,-828.6 125,-828.6 125,-828.6 125,-189.8 125,-162.77 85.45,-98.62 61.29,-61.95"></path>
+<polygon fill="black" stroke="black" points="64.22,-60.03 55.76,-53.65 58.39,-63.91 64.22,-60.03"></polygon>
+</g>
+<!-- DRV2_PWR -->
+<g id="node35" class="node">
+<title>DRV2_PWR</title>
+<polygon fill="lightgrey" stroke="black" points="436,-52 382,-52 382,-16 436,-16 436,-52"></polygon>
+<text text-anchor="middle" x="409" y="-31" font-family="Arial" font-size="10.00">POWER</text>
+</g>
+<!-- mF2&#45;&gt;DRV2_PWR -->
+<g id="edge9" class="edge">
+<title>mF2-&gt;DRV2_PWR</title>
+<path fill="none" stroke="black" d="M250.97,-966.3C237.07,-938.32 212,-880.65 212,-828.6 212,-828.6 212,-828.6 212,-189.8 212,-140.46 224.45,-119.42 266,-92.8 285.52,-80.3 349.57,-95.74 370,-84.8 379.81,-79.55 387.97,-70.65 394.24,-61.81"></path>
+<polygon fill="black" stroke="black" points="396.99,-64 399.48,-53.7 391.11,-60.2 396.99,-64"></polygon>
+</g>
+<!-- DRV3_PWR -->
+<g id="node46" class="node">
+<title>DRV3_PWR</title>
+<polygon fill="lightgrey" stroke="black" points="1090,-52 1036,-52 1036,-16 1090,-16 1090,-52"></polygon>
+<text text-anchor="middle" x="1063" y="-31" font-family="Arial" font-size="10.00">POWER</text>
+</g>
+<!-- mF3&#45;&gt;DRV3_PWR -->
+<g id="edge10" class="edge">
+<title>mF3-&gt;DRV3_PWR</title>
+<path fill="none" stroke="black" d="M506.51,-979.01C542.73,-974.43 595.79,-965.72 640,-950.4 750.41,-912.15 873,-945.45 873,-828.6 873,-828.6 873,-828.6 873,-189.8 873,-106.96 967.62,-142.57 1027,-84.8 1034.07,-77.92 1040.72,-69.52 1046.34,-61.59"></path>
+<polygon fill="black" stroke="black" points="1049.09,-63.78 1051.8,-53.54 1043.29,-59.86 1049.09,-63.78"></polygon>
+</g>
+<!-- BC_IN -->
+<g id="node9" class="node">
+<title>BC_IN</title>
+<polygon fill="lightgrey" stroke="black" points="628.29,-917.6 561.71,-917.6 561.71,-881.6 628.29,-881.6 628.29,-917.6"></polygon>
+<text text-anchor="middle" x="595" y="-896.6" font-family="Arial" font-size="10.00">11V INPUT</text>
+</g>
+<!-- mF4&#45;&gt;BC_IN -->
+<g id="edge11" class="edge">
+<title>mF4-&gt;BC_IN</title>
+<path fill="none" stroke="black" d="M392.52,-966.01C399.09,-962.97 406.13,-960.2 413,-958.4 443.14,-950.5 525.13,-964.34 553,-950.4 563.51,-945.14 572.41,-935.95 579.27,-926.88"></path>
+<polygon fill="black" stroke="black" points="581.99,-929.1 584.81,-918.89 576.24,-925.12 581.99,-929.1"></polygon>
+</g>
+<!-- POTENTIONMETER1 -->
+<g id="node10" class="node">
+<title>POTENTIONMETER1</title>
+<polygon fill="lightgrey" stroke="black" points="544.06,-917.6 441.94,-917.6 441.94,-881.6 544.06,-881.6 544.06,-917.6"></polygon>
+<text text-anchor="middle" x="493" y="-896.6" font-family="Arial" font-size="10.00">POTENTIOMETER</text>
+</g>
+<!-- LOGIC -->
+<g id="node11" class="node">
+<title>LOGIC</title>
+<polygon fill="#98fb98" stroke="black" points="579.56,-845.6 502.44,-845.6 502.44,-809.6 579.56,-809.6 579.56,-845.6"></polygon>
+<text text-anchor="middle" x="541" y="-824.6" font-family="Arial" font-size="10.00">3.3V POWER</text>
+</g>
+<!-- POTENTIONMETER1&#45;&gt;LOGIC -->
+<g id="edge18" class="edge">
+<title>POTENTIONMETER1-&gt;LOGIC</title>
+<path fill="none" stroke="black" d="M504.87,-881.3C510.27,-873.41 516.79,-863.9 522.8,-855.15"></path>
+<polygon fill="black" stroke="black" points="525.65,-857.18 528.42,-846.95 519.87,-853.22 525.65,-857.18"></polygon>
+</g>
+<!-- ZETA_IN -->
+<g id="node14" class="node">
+<title>ZETA_IN</title>
+<polygon fill="lightgrey" stroke="black" points="575.67,-760.8 506.33,-760.8 506.33,-724.8 575.67,-724.8 575.67,-760.8"></polygon>
+<text text-anchor="middle" x="541" y="-739.8" font-family="Arial" font-size="10.00">3.3V INPUT</text>
+</g>
+<!-- LOGIC&#45;&gt;ZETA_IN -->
+<g id="edge17" class="edge">
+<title>LOGIC-&gt;ZETA_IN</title>
+<path fill="none" stroke="black" d="M541,-809.44C541,-798.75 541,-784.72 541,-772.37"></path>
+<polygon fill="black" stroke="black" points="544.5,-772.73 541,-762.73 537.5,-772.73 544.5,-772.73"></polygon>
+</g>
+<!-- Q4_SOURCE -->
+<g id="node15" class="node">
+<title>Q4_SOURCE</title>
+<polygon fill="lightgrey" stroke="black" points="422.39,-684 363.61,-684 363.61,-648 422.39,-648 422.39,-684"></polygon>
+<text text-anchor="middle" x="393" y="-663" font-family="Arial" font-size="10.00">SOURCE</text>
+</g>
+<!-- LOGIC&#45;&gt;Q4_SOURCE -->
+<g id="edge14" class="edge">
+<title>LOGIC-&gt;Q4_SOURCE</title>
+<path fill="none" stroke="black" d="M502.13,-823.01C480.15,-819.07 453.63,-810.83 436,-793.6 409.27,-767.48 399.16,-724.14 395.33,-695.57"></path>
+<polygon fill="black" stroke="black" points="398.83,-695.37 394.21,-685.83 391.87,-696.16 398.83,-695.37"></polygon>
+</g>
+<!-- Q1_SOURCE -->
+<g id="node26" class="node">
+<title>Q1_SOURCE</title>
+<polygon fill="lightgrey" stroke="black" points="686.39,-684 627.61,-684 627.61,-648 686.39,-648 686.39,-684"></polygon>
+<text text-anchor="middle" x="657" y="-663" font-family="Arial" font-size="10.00">SOURCE</text>
+</g>
+<!-- LOGIC&#45;&gt;Q1_SOURCE -->
+<g id="edge15" class="edge">
+<title>LOGIC-&gt;Q1_SOURCE</title>
+<path fill="none" stroke="black" d="M579.98,-816.53C592.93,-811.5 606.46,-804.16 616,-793.6 640.8,-766.15 650.62,-723.51 654.49,-695.42"></path>
+<polygon fill="black" stroke="black" points="657.92,-696.21 655.63,-685.86 650.97,-695.38 657.92,-696.21"></polygon>
+</g>
+<!-- Q2_SOURCE -->
+<g id="node37" class="node">
+<title>Q2_SOURCE</title>
+<polygon fill="lightgrey" stroke="black" points="842.39,-760.8 783.61,-760.8 783.61,-724.8 842.39,-724.8 842.39,-760.8"></polygon>
+<text text-anchor="middle" x="813" y="-739.8" font-family="Arial" font-size="10.00">SOURCE</text>
+</g>
+<!-- LOGIC&#45;&gt;Q2_SOURCE -->
+<g id="edge16" class="edge">
+<title>LOGIC-&gt;Q2_SOURCE</title>
+<path fill="none" stroke="black" d="M579.77,-824.29C636.28,-820.37 738.02,-811.1 770,-793.6 780.26,-787.98 789.2,-778.89 796.22,-770"></path>
+<polygon fill="black" stroke="black" points="798.86,-772.32 801.93,-762.19 793.21,-768.19 798.86,-772.32"></polygon>
+</g>
+<!-- JK_IN -->
+<g id="node50" class="node">
+<title>JK_IN</title>
+<polygon fill="lightgrey" stroke="black" points="729.67,-208.8 660.33,-208.8 660.33,-172.8 729.67,-172.8 729.67,-208.8"></polygon>
+<text text-anchor="middle" x="695" y="-187.8" font-family="Arial" font-size="10.00">3.3V INPUT</text>
+</g>
+<!-- LOGIC&#45;&gt;JK_IN -->
+<g id="edge12" class="edge">
+<title>LOGIC-&gt;JK_IN</title>
+<path fill="none" stroke="black" d="M580.04,-820.78C601.16,-816.13 626.77,-807.92 646,-793.6 679.06,-768.98 677.22,-752.4 698,-716.8 735.23,-653.01 728.88,-627.96 772,-568 774.94,-563.92 777.8,-564.52 780,-560 806.3,-505.8 796,-485.64 796,-425.4 796,-425.4 796,-425.4 796,-346.6 796,-293.74 754.18,-244.81 724.36,-216.64"></path>
+<polygon fill="black" stroke="black" points="726.78,-214.11 717.04,-209.94 722.05,-219.28 726.78,-214.11"></polygon>
+</g>
+<!-- TIMER_IN -->
+<g id="node51" class="node">
+<title>TIMER_IN</title>
+<polygon fill="lightgrey" stroke="black" points="467.67,-208.8 398.33,-208.8 398.33,-172.8 467.67,-172.8 467.67,-208.8"></polygon>
+<text text-anchor="middle" x="433" y="-187.8" font-family="Arial" font-size="10.00">3.3V INPUT</text>
+</g>
+<!-- LOGIC&#45;&gt;TIMER_IN -->
+<g id="edge13" class="edge">
+<title>LOGIC-&gt;TIMER_IN</title>
+<path fill="none" stroke="black" d="M502.04,-817.91C488.61,-812.98 474.76,-805.34 466,-793.6 432.08,-748.14 450,-723.71 450,-667 450,-667 450,-667 450,-346.6 450,-302.21 443.01,-251.07 437.99,-220.11"></path>
+<polygon fill="black" stroke="black" points="441.47,-219.69 436.37,-210.41 434.56,-220.85 441.47,-219.69"></polygon>
+</g>
+<!-- RF1 -->
+<g id="node12" class="node">
+<title>RF1</title>
+<polygon fill="lightgrey" stroke="black" points="532,-684 478,-684 478,-648 532,-648 532,-684"></polygon>
+<text text-anchor="middle" x="505" y="-663" font-family="Arial" font-size="10.00">RF_1</text>
+</g>
+<!-- Q4_GATE -->
+<g id="node16" class="node">
+<title>Q4_GATE</title>
+<polygon fill="lightgrey" stroke="black" points="420,-612 366,-612 366,-576 420,-576 420,-612"></polygon>
+<text text-anchor="middle" x="393" y="-591" font-family="Arial" font-size="10.00">GATE</text>
+</g>
+<!-- RF1&#45;&gt;Q4_GATE -->
+<g id="edge22" class="edge">
+<title>RF1-&gt;Q4_GATE</title>
+<path fill="none" stroke="black" d="M477.6,-647.88C463.12,-638.83 445.15,-627.6 429.51,-617.82"></path>
+<polygon fill="black" stroke="black" points="431.73,-615.08 421.4,-612.75 428.02,-621.02 431.73,-615.08"></polygon>
+</g>
+<!-- Q2_GATE -->
+<g id="node38" class="node">
+<title>Q2_GATE</title>
+<polygon fill="lightgrey" stroke="black" points="838,-684 784,-684 784,-648 838,-648 838,-684"></polygon>
+<text text-anchor="middle" x="811" y="-663" font-family="Arial" font-size="10.00">GATE</text>
+</g>
+<!-- RF1&#45;&gt;Q2_GATE -->
+<g id="edge36" class="edge">
+<title>RF1-&gt;Q2_GATE</title>
+<path fill="none" stroke="black" d="M512.47,-684.43C519.59,-698.81 531.94,-716.97 550,-720.8 572.93,-725.67 738.07,-725.67 761,-720.8 775.91,-717.64 787.72,-705.68 796.11,-693.75"></path>
+<polygon fill="black" stroke="black" points="798.87,-695.93 801.29,-685.62 792.96,-692.17 798.87,-695.93"></polygon>
+</g>
+<!-- RF2 -->
+<g id="node13" class="node">
+<title>RF2</title>
+<polygon fill="lightgrey" stroke="black" points="604,-684 550,-684 550,-648 604,-648 604,-684"></polygon>
+<text text-anchor="middle" x="577" y="-663" font-family="Arial" font-size="10.00">RF_2</text>
+</g>
+<!-- Q1_GATE -->
+<g id="node27" class="node">
+<title>Q1_GATE</title>
+<polygon fill="lightgrey" stroke="black" points="682,-612 628,-612 628,-576 682,-576 682,-612"></polygon>
+<text text-anchor="middle" x="655" y="-591" font-family="Arial" font-size="10.00">GATE</text>
+</g>
+<!-- RF2&#45;&gt;Q1_GATE -->
+<g id="edge29" class="edge">
+<title>RF2-&gt;Q1_GATE</title>
+<path fill="none" stroke="black" d="M596.28,-647.7C605.66,-639.28 617.09,-629.02 627.38,-619.79"></path>
+<polygon fill="black" stroke="black" points="629.44,-622.64 634.54,-613.36 624.76,-617.43 629.44,-622.64"></polygon>
+</g>
+<!-- Q3_GATE -->
+<g id="node41" class="node">
+<title>Q3_GATE</title>
+<polygon fill="lightgrey" stroke="black" points="765,-442.4 711,-442.4 711,-406.4 765,-406.4 765,-442.4"></polygon>
+<text text-anchor="middle" x="738" y="-421.4" font-family="Arial" font-size="10.00">GATE</text>
+</g>
+<!-- RF2&#45;&gt;Q3_GATE -->
+<g id="edge38" class="edge">
+<title>RF2-&gt;Q3_GATE</title>
+<path fill="none" stroke="black" d="M575.94,-647.63C574.74,-612.61 576.82,-532.67 616,-483.2 636.78,-456.96 672.35,-442.01 699.73,-433.92"></path>
+<polygon fill="black" stroke="black" points="700.35,-437.38 709.07,-431.35 698.5,-430.63 700.35,-437.38"></polygon>
+</g>
+<!-- ZETA_IN&#45;&gt;RF1 -->
+<g id="edge19" class="edge">
+<title>ZETA_IN-&gt;RF1</title>
+<path fill="none" stroke="black" d="M532.65,-724.45C528.38,-715.58 523.08,-704.56 518.27,-694.56"></path>
+<polygon fill="black" stroke="black" points="521.45,-693.11 513.96,-685.62 515.14,-696.15 521.45,-693.11"></polygon>
+</g>
+<!-- ZETA_IN&#45;&gt;RF2 -->
+<g id="edge20" class="edge">
+<title>ZETA_IN-&gt;RF2</title>
+<path fill="none" stroke="black" d="M549.35,-724.45C553.62,-715.58 558.92,-704.56 563.73,-694.56"></path>
+<polygon fill="black" stroke="black" points="566.86,-696.15 568.04,-685.62 560.55,-693.11 566.86,-696.15"></polygon>
+</g>
+<!-- Q4_SOURCE&#45;&gt;Q4_GATE -->
+<g id="edge21" class="edge">
+<title>Q4_SOURCE-&gt;Q4_GATE</title>
+<path fill="none" stroke="black" d="M393,-647.7C393,-640.41 393,-631.73 393,-623.54"></path>
+<polygon fill="black" stroke="black" points="396.5,-623.62 393,-613.62 389.5,-623.62 396.5,-623.62"></polygon>
+</g>
+<!-- Q4_SINK -->
+<g id="node17" class="node">
+<title>Q4_SINK</title>
+<polygon fill="lightgrey" stroke="black" points="420,-527.2 366,-527.2 366,-491.2 420,-491.2 420,-527.2"></polygon>
+<text text-anchor="middle" x="393" y="-506.2" font-family="Arial" font-size="10.00">SINK</text>
+</g>
+<!-- Q4_GATE&#45;&gt;Q4_SINK -->
+<g id="edge23" class="edge">
+<title>Q4_GATE-&gt;Q4_SINK</title>
+<path fill="none" stroke="black" d="M393,-575.84C393,-565.15 393,-551.12 393,-538.77"></path>
+<polygon fill="black" stroke="black" points="396.5,-539.13 393,-529.13 389.5,-539.13 396.5,-539.13"></polygon>
+</g>
+<!-- Q12_SOURCE -->
+<g id="node18" class="node">
+<title>Q12_SOURCE</title>
+<polygon fill="lightgrey" stroke="black" points="422.39,-442.4 363.61,-442.4 363.61,-406.4 422.39,-406.4 422.39,-442.4"></polygon>
+<text text-anchor="middle" x="393" y="-421.4" font-family="Arial" font-size="10.00">SOURCE</text>
+</g>
+<!-- Q4_SINK&#45;&gt;Q12_SOURCE -->
+<g id="edge24" class="edge">
+<title>Q4_SINK-&gt;Q12_SOURCE</title>
+<path fill="none" stroke="black" d="M393,-491.04C393,-480.35 393,-466.32 393,-453.97"></path>
+<polygon fill="black" stroke="black" points="396.5,-454.33 393,-444.33 389.5,-454.33 396.5,-454.33"></polygon>
+</g>
+<!-- JK_DIR -->
+<g id="node48" class="node">
+<title>JK_DIR</title>
+<polygon fill="lightgrey" stroke="black" points="658,-136.8 604,-136.8 604,-100.8 658,-100.8 658,-136.8"></polygon>
+<text text-anchor="middle" x="631" y="-115.8" font-family="Arial" font-size="10.00">DIR</text>
+</g>
+<!-- Q4_SINK&#45;&gt;JK_DIR -->
+<g id="edge45" class="edge">
+<title>Q4_SINK-&gt;JK_DIR</title>
+<path fill="none" stroke="black" d="M365.56,-491.85C360.09,-487.2 355.08,-481.63 352,-475.2 308.7,-384.76 283.35,-322.68 352,-249.6 371.51,-228.83 456.98,-258.4 480,-241.6 509.6,-220 483.88,-190.5 510,-164.8 532.34,-142.82 566.37,-131.43 592.65,-125.61"></path>
+<polygon fill="black" stroke="black" points="593.16,-129.08 602.27,-123.68 591.78,-122.22 593.16,-129.08"></polygon>
+</g>
+<!-- Q12_GATE -->
+<g id="node19" class="node">
+<title>Q12_GATE</title>
+<polygon fill="lightgrey" stroke="black" points="420,-365.6 366,-365.6 366,-329.6 420,-329.6 420,-365.6"></polygon>
+<text text-anchor="middle" x="393" y="-344.6" font-family="Arial" font-size="10.00">GATE</text>
+</g>
+<!-- Q12_SOURCE&#45;&gt;Q12_GATE -->
+<g id="edge25" class="edge">
+<title>Q12_SOURCE-&gt;Q12_GATE</title>
+<path fill="none" stroke="black" d="M393,-406.05C393,-397.46 393,-386.87 393,-377.12"></path>
+<polygon fill="black" stroke="black" points="396.5,-377.37 393,-367.37 389.5,-377.37 396.5,-377.37"></polygon>
+</g>
+<!-- Q12_SINK -->
+<g id="node20" class="node">
+<title>Q12_SINK</title>
+<polygon fill="lightgrey" stroke="black" points="419,-293.6 365,-293.6 365,-257.6 419,-257.6 419,-293.6"></polygon>
+<text text-anchor="middle" x="392" y="-272.6" font-family="Arial" font-size="10.00">SINK</text>
+</g>
+<!-- Q12_GATE&#45;&gt;Q12_SINK -->
+<g id="edge26" class="edge">
+<title>Q12_GATE-&gt;Q12_SINK</title>
+<path fill="none" stroke="black" d="M392.75,-329.3C392.65,-322.01 392.52,-313.33 392.41,-305.14"></path>
+<polygon fill="black" stroke="black" points="395.91,-305.17 392.27,-295.22 388.91,-305.27 395.91,-305.17"></polygon>
+</g>
+<!-- SLEEP1 -->
+<g id="node21" class="node">
+<title>SLEEP1</title>
+<polygon fill="lightgrey" stroke="black" points="142,-52 88,-52 88,-16 142,-16 142,-52"></polygon>
+<text text-anchor="middle" x="115" y="-31" font-family="Arial" font-size="10.00">SLEEP</text>
+</g>
+<!-- Q12_SINK&#45;&gt;SLEEP1 -->
+<g id="edge27" class="edge">
+<title>Q12_SINK-&gt;SLEEP1</title>
+<path fill="none" stroke="black" d="M364.5,-272.71C337.4,-269.7 295.83,-261.88 266,-241.6 197.75,-195.2 149.04,-107.36 127.45,-62.65"></path>
+<polygon fill="black" stroke="black" points="130.63,-61.18 123.2,-53.63 124.3,-64.17 130.63,-61.18"></polygon>
+</g>
+<!-- DIR1 -->
+<g id="node22" class="node">
+<title>DIR1</title>
+<polygon fill="lightgrey" stroke="black" points="286,-52 232,-52 232,-16 286,-16 286,-52"></polygon>
+<text text-anchor="middle" x="259" y="-31" font-family="Arial" font-size="10.00">DIR</text>
+</g>
+<!-- M0M11 -->
+<g id="node23" class="node">
+<title>M0M11</title>
+<polygon fill="lightgrey" stroke="black" points="358,-52 304,-52 304,-16 358,-16 358,-52"></polygon>
+<text text-anchor="middle" x="331" y="-31" font-family="Arial" font-size="10.00">M0M1</text>
+</g>
+<!-- WAVE1 -->
+<g id="node25" class="node">
+<title>WAVE1</title>
+<polygon fill="lightgrey" stroke="black" points="214,-52 160,-52 160,-16 214,-16 214,-52"></polygon>
+<text text-anchor="middle" x="187" y="-31" font-family="Arial" font-size="10.00">STEP</text>
+</g>
+<!-- Q1_SOURCE&#45;&gt;Q1_GATE -->
+<g id="edge28" class="edge">
+<title>Q1_SOURCE-&gt;Q1_GATE</title>
+<path fill="none" stroke="black" d="M656.51,-647.7C656.3,-640.41 656.05,-631.73 655.82,-623.54"></path>
+<polygon fill="black" stroke="black" points="659.32,-623.51 655.53,-613.62 652.32,-623.71 659.32,-623.51"></polygon>
+</g>
+<!-- Q1_SINK -->
+<g id="node28" class="node">
+<title>Q1_SINK</title>
+<polygon fill="lightgrey" stroke="black" points="682,-527.2 628,-527.2 628,-491.2 682,-491.2 682,-527.2"></polygon>
+<text text-anchor="middle" x="655" y="-506.2" font-family="Arial" font-size="10.00">SINK</text>
+</g>
+<!-- Q1_GATE&#45;&gt;Q1_SINK -->
+<g id="edge30" class="edge">
+<title>Q1_GATE-&gt;Q1_SINK</title>
+<path fill="none" stroke="black" d="M655,-575.84C655,-565.15 655,-551.12 655,-538.77"></path>
+<polygon fill="black" stroke="black" points="658.5,-539.13 655,-529.13 651.5,-539.13 658.5,-539.13"></polygon>
+</g>
+<!-- Q1_SINK&#45;&gt;Q12_GATE -->
+<g id="edge42" class="edge">
+<title>Q1_SINK-&gt;Q12_GATE</title>
+<path fill="none" stroke="black" d="M627.7,-496.17C614.84,-490.25 599.42,-482.76 586,-475.2 528.08,-442.55 464.15,-399.03 426.35,-372.46"></path>
+<polygon fill="black" stroke="black" points="428.74,-369.86 418.55,-366.96 424.7,-375.58 428.74,-369.86"></polygon>
+</g>
+<!-- Q8_SOURCE -->
+<g id="node29" class="node">
+<title>Q8_SOURCE</title>
+<polygon fill="lightgrey" stroke="black" points="580.39,-365.6 521.61,-365.6 521.61,-329.6 580.39,-329.6 580.39,-365.6"></polygon>
+<text text-anchor="middle" x="551" y="-344.6" font-family="Arial" font-size="10.00">SOURCE</text>
+</g>
+<!-- Q1_SINK&#45;&gt;Q8_SOURCE -->
+<g id="edge31" class="edge">
+<title>Q1_SINK-&gt;Q8_SOURCE</title>
+<path fill="none" stroke="black" d="M643.67,-490.82C625.54,-462.99 589.88,-408.26 568.47,-375.4"></path>
+<polygon fill="black" stroke="black" points="571.53,-373.7 563.14,-367.23 565.67,-377.52 571.53,-373.7"></polygon>
+</g>
+<!-- Q8_GATE -->
+<g id="node30" class="node">
+<title>Q8_GATE</title>
+<polygon fill="lightgrey" stroke="black" points="580,-293.6 526,-293.6 526,-257.6 580,-257.6 580,-293.6"></polygon>
+<text text-anchor="middle" x="553" y="-272.6" font-family="Arial" font-size="10.00">GATE</text>
+</g>
+<!-- Q8_SOURCE&#45;&gt;Q8_GATE -->
+<g id="edge32" class="edge">
+<title>Q8_SOURCE-&gt;Q8_GATE</title>
+<path fill="none" stroke="black" d="M551.49,-329.3C551.7,-322.01 551.95,-313.33 552.18,-305.14"></path>
+<polygon fill="black" stroke="black" points="555.68,-305.31 552.47,-295.22 548.68,-305.11 555.68,-305.31"></polygon>
+</g>
+<!-- Q8_SINK -->
+<g id="node31" class="node">
+<title>Q8_SINK</title>
+<polygon fill="lightgrey" stroke="black" points="580,-208.8 526,-208.8 526,-172.8 580,-172.8 580,-208.8"></polygon>
+<text text-anchor="middle" x="553" y="-187.8" font-family="Arial" font-size="10.00">SINK</text>
+</g>
+<!-- Q8_GATE&#45;&gt;Q8_SINK -->
+<g id="edge33" class="edge">
+<title>Q8_GATE-&gt;Q8_SINK</title>
+<path fill="none" stroke="black" d="M553,-257.44C553,-246.75 553,-232.72 553,-220.37"></path>
+<polygon fill="black" stroke="black" points="556.5,-220.73 553,-210.73 549.5,-220.73 556.5,-220.73"></polygon>
+</g>
+<!-- SLEEP2 -->
+<g id="node32" class="node">
+<title>SLEEP2</title>
+<polygon fill="lightgrey" stroke="black" points="580,-52 526,-52 526,-16 580,-16 580,-52"></polygon>
+<text text-anchor="middle" x="553" y="-31" font-family="Arial" font-size="10.00">SLEEP</text>
+</g>
+<!-- Q8_SINK&#45;&gt;SLEEP2 -->
+<g id="edge34" class="edge">
+<title>Q8_SINK-&gt;SLEEP2</title>
+<path fill="none" stroke="black" d="M553,-172.34C553,-145.84 553,-95.18 553,-63.35"></path>
+<polygon fill="black" stroke="black" points="556.5,-63.67 553,-53.67 549.5,-63.67 556.5,-63.67"></polygon>
+</g>
+<!-- JK_M0M1 -->
+<g id="node49" class="node">
+<title>JK_M0M1</title>
+<polygon fill="lightgrey" stroke="black" points="730,-136.8 676,-136.8 676,-100.8 730,-100.8 730,-136.8"></polygon>
+<text text-anchor="middle" x="703" y="-115.8" font-family="Arial" font-size="10.00">M0M1</text>
+</g>
+<!-- Q8_SINK&#45;&gt;JK_M0M1 -->
+<g id="edge46" class="edge">
+<title>Q8_SINK-&gt;JK_M0M1</title>
+<path fill="none" stroke="black" d="M578.56,-172.33C582.95,-169.65 587.54,-167.03 592,-164.8 620.96,-150.32 632.18,-150.46 665.15,-137.34"></path>
+<polygon fill="black" stroke="black" points="666.28,-140.66 674.19,-133.61 663.61,-134.18 666.28,-140.66"></polygon>
+</g>
+<!-- DIR2 -->
+<g id="node33" class="node">
+<title>DIR2</title>
+<polygon fill="lightgrey" stroke="black" points="652,-52 598,-52 598,-16 652,-16 652,-52"></polygon>
+<text text-anchor="middle" x="625" y="-31" font-family="Arial" font-size="10.00">DIR</text>
+</g>
+<!-- M0M12 -->
+<g id="node34" class="node">
+<title>M0M12</title>
+<polygon fill="lightgrey" stroke="black" points="724,-52 670,-52 670,-16 724,-16 724,-52"></polygon>
+<text text-anchor="middle" x="697" y="-31" font-family="Arial" font-size="10.00">M0M1</text>
+</g>
+<!-- WAVE2 -->
+<g id="node36" class="node">
+<title>WAVE2</title>
+<polygon fill="lightgrey" stroke="black" points="508,-52 454,-52 454,-16 508,-16 508,-52"></polygon>
+<text text-anchor="middle" x="481" y="-31" font-family="Arial" font-size="10.00">STEP</text>
+</g>
+<!-- Q2_SOURCE&#45;&gt;Q2_GATE -->
+<g id="edge35" class="edge">
+<title>Q2_SOURCE-&gt;Q2_GATE</title>
+<path fill="none" stroke="black" d="M812.54,-724.45C812.31,-715.86 812.02,-705.27 811.76,-695.52"></path>
+<polygon fill="black" stroke="black" points="815.27,-695.67 811.5,-685.77 808.27,-695.86 815.27,-695.67"></polygon>
+</g>
+<!-- Q2_SINK -->
+<g id="node39" class="node">
+<title>Q2_SINK</title>
+<polygon fill="lightgrey" stroke="black" points="838,-612 784,-612 784,-576 838,-576 838,-612"></polygon>
+<text text-anchor="middle" x="811" y="-591" font-family="Arial" font-size="10.00">SINK</text>
+</g>
+<!-- Q2_GATE&#45;&gt;Q2_SINK -->
+<g id="edge37" class="edge">
+<title>Q2_GATE-&gt;Q2_SINK</title>
+<path fill="none" stroke="black" d="M811,-647.7C811,-640.41 811,-631.73 811,-623.54"></path>
+<polygon fill="black" stroke="black" points="814.5,-623.62 811,-613.62 807.5,-623.62 814.5,-623.62"></polygon>
+</g>
+<!-- Q3_SOURCE -->
+<g id="node40" class="node">
+<title>Q3_SOURCE</title>
+<polygon fill="lightgrey" stroke="black" points="768.39,-527.2 709.61,-527.2 709.61,-491.2 768.39,-491.2 768.39,-527.2"></polygon>
+<text text-anchor="middle" x="739" y="-506.2" font-family="Arial" font-size="10.00">SOURCE</text>
+</g>
+<!-- Q2_SINK&#45;&gt;Q3_SOURCE -->
+<g id="edge39" class="edge">
+<title>Q2_SINK-&gt;Q3_SOURCE</title>
+<path fill="none" stroke="black" d="M796.08,-575.84C786.11,-564.37 772.8,-549.07 761.55,-536.13"></path>
+<polygon fill="black" stroke="black" points="764.34,-534.01 755.14,-528.76 759.06,-538.6 764.34,-534.01"></polygon>
+</g>
+<!-- Q3_SOURCE&#45;&gt;Q3_GATE -->
+<g id="edge40" class="edge">
+<title>Q3_SOURCE-&gt;Q3_GATE</title>
+<path fill="none" stroke="black" d="M738.79,-491.04C738.66,-480.35 738.49,-466.32 738.35,-453.97"></path>
+<polygon fill="black" stroke="black" points="741.85,-454.29 738.23,-444.33 734.85,-454.37 741.85,-454.29"></polygon>
+</g>
+<!-- Q3_SINK -->
+<g id="node42" class="node">
+<title>Q3_SINK</title>
+<polygon fill="lightgrey" stroke="black" points="765,-365.6 711,-365.6 711,-329.6 765,-329.6 765,-365.6"></polygon>
+<text text-anchor="middle" x="738" y="-344.6" font-family="Arial" font-size="10.00">SINK</text>
+</g>
+<!-- Q3_GATE&#45;&gt;Q3_SINK -->
+<g id="edge41" class="edge">
+<title>Q3_GATE-&gt;Q3_SINK</title>
+<path fill="none" stroke="black" d="M738,-406.05C738,-397.46 738,-386.87 738,-377.12"></path>
+<polygon fill="black" stroke="black" points="741.5,-377.37 738,-367.37 734.5,-377.37 741.5,-377.37"></polygon>
+</g>
+<!-- Q3_SINK&#45;&gt;Q8_GATE -->
+<g id="edge43" class="edge">
+<title>Q3_SINK-&gt;Q8_GATE</title>
+<path fill="none" stroke="black" d="M710.7,-336.27C679,-324.28 626.52,-304.42 590.89,-290.94"></path>
+<polygon fill="black" stroke="black" points="592.42,-287.77 581.82,-287.51 589.94,-294.32 592.42,-287.77"></polygon>
+</g>
+<!-- SLEEP3 -->
+<g id="node43" class="node">
+<title>SLEEP3</title>
+<polygon fill="lightgrey" stroke="black" points="1018,-52 964,-52 964,-16 1018,-16 1018,-52"></polygon>
+<text text-anchor="middle" x="991" y="-31" font-family="Arial" font-size="10.00">SLEEP</text>
+</g>
+<!-- Q3_SINK&#45;&gt;SLEEP3 -->
+<g id="edge44" class="edge">
+<title>Q3_SINK-&gt;SLEEP3</title>
+<path fill="none" stroke="black" d="M740.36,-329.26C747.79,-281.99 775.46,-150.51 859,-92.8 876.61,-80.63 936.36,-95.33 955,-84.8 964.31,-79.54 971.86,-70.76 977.58,-62.03"></path>
+<polygon fill="black" stroke="black" points="980.44,-64.07 982.51,-53.68 974.41,-60.51 980.44,-64.07"></polygon>
+</g>
+<!-- DIR3 -->
+<g id="node44" class="node">
+<title>DIR3</title>
+<polygon fill="lightgrey" stroke="black" points="874,-52 820,-52 820,-16 874,-16 874,-52"></polygon>
+<text text-anchor="middle" x="847" y="-31" font-family="Arial" font-size="10.00">DIR</text>
+</g>
+<!-- M0M13 -->
+<g id="node45" class="node">
+<title>M0M13</title>
+<polygon fill="lightgrey" stroke="black" points="946,-52 892,-52 892,-16 946,-16 946,-52"></polygon>
+<text text-anchor="middle" x="919" y="-31" font-family="Arial" font-size="10.00">M0M1</text>
+</g>
+<!-- WAVE3 -->
+<g id="node47" class="node">
+<title>WAVE3</title>
+<polygon fill="lightgrey" stroke="black" points="802,-52 748,-52 748,-16 802,-16 802,-52"></polygon>
+<text text-anchor="middle" x="775" y="-31" font-family="Arial" font-size="10.00">STEP</text>
+</g>
+<!-- JK_DIR&#45;&gt;DIR1 -->
+<g id="edge47" class="edge">
+<title>JK_DIR-&gt;DIR1</title>
+<path fill="none" stroke="black" d="M603.58,-112.23C573.43,-106.36 523.48,-97.32 480,-92.8 459.54,-90.67 313.11,-94.56 295,-84.8 285.45,-79.65 277.8,-70.74 272.06,-61.85"></path>
+<polygon fill="black" stroke="black" points="275.17,-60.26 267.13,-53.36 269.12,-63.76 275.17,-60.26"></polygon>
+</g>
+<!-- JK_DIR&#45;&gt;DIR2 -->
+<g id="edge48" class="edge">
+<title>JK_DIR-&gt;DIR2</title>
+<path fill="none" stroke="black" d="M629.76,-100.64C628.98,-89.95 627.96,-75.92 627.07,-63.57"></path>
+<polygon fill="black" stroke="black" points="630.59,-63.65 626.37,-53.93 623.6,-64.16 630.59,-63.65"></polygon>
+</g>
+<!-- JK_DIR&#45;&gt;DIR3 -->
+<g id="edge49" class="edge">
+<title>JK_DIR-&gt;DIR3</title>
+<path fill="none" stroke="black" d="M652.03,-100.38C656.7,-97.34 661.82,-94.58 667,-92.8 697.31,-82.38 782.88,-100.17 811,-84.8 820.39,-79.67 827.94,-70.92 833.66,-62.17"></path>
+<polygon fill="black" stroke="black" points="836.54,-64.19 838.57,-53.79 830.5,-60.65 836.54,-64.19"></polygon>
+</g>
+<!-- JK_M0M1&#45;&gt;M0M11 -->
+<g id="edge50" class="edge">
+<title>JK_M0M1-&gt;M0M11</title>
+<path fill="none" stroke="black" d="M682.4,-100.52C677.62,-97.38 672.35,-94.56 667,-92.8 635.63,-82.51 399.48,-99.65 370,-84.8 359.92,-79.72 351.64,-70.69 345.35,-61.7"></path>
+<polygon fill="black" stroke="black" points="348.42,-60.01 340.12,-53.43 342.51,-63.75 348.42,-60.01"></polygon>
+</g>
+<!-- JK_M0M1&#45;&gt;M0M12 -->
+<g id="edge51" class="edge">
+<title>JK_M0M1-&gt;M0M12</title>
+<path fill="none" stroke="black" d="M701.76,-100.64C700.98,-89.95 699.96,-75.92 699.07,-63.57"></path>
+<polygon fill="black" stroke="black" points="702.59,-63.65 698.37,-53.93 695.6,-64.16 702.59,-63.65"></polygon>
+</g>
+<!-- JK_M0M1&#45;&gt;M0M13 -->
+<g id="edge52" class="edge">
+<title>JK_M0M1-&gt;M0M13</title>
+<path fill="none" stroke="black" d="M727.21,-100.39C732.52,-97.35 738.27,-94.59 744,-92.8 773.53,-83.58 855.87,-99.67 883,-84.8 892.38,-79.66 899.94,-70.91 905.66,-62.16"></path>
+<polygon fill="black" stroke="black" points="908.53,-64.18 910.57,-53.78 902.49,-60.64 908.53,-64.18"></polygon>
+</g>
+<!-- JK_IN&#45;&gt;JK_DIR -->
+<g id="edge53" class="edge">
+<title>JK_IN-&gt;JK_DIR</title>
+<path fill="none" stroke="black" d="M679.18,-172.5C671.66,-164.27 662.53,-154.28 654.24,-145.22"></path>
+<polygon fill="black" stroke="black" points="656.99,-143.04 647.66,-138.02 651.82,-147.76 656.99,-143.04"></polygon>
+</g>
+<!-- JK_IN&#45;&gt;JK_M0M1 -->
+<g id="edge54" class="edge">
+<title>JK_IN-&gt;JK_M0M1</title>
+<path fill="none" stroke="black" d="M696.98,-172.5C697.81,-165.21 698.8,-156.53 699.74,-148.34"></path>
+<polygon fill="black" stroke="black" points="703.22,-148.74 700.87,-138.41 696.26,-147.95 703.22,-148.74"></polygon>
+</g>
+<!-- WAVES -->
+<g id="node52" class="node">
+<title>WAVES</title>
+<polygon fill="lightgrey" stroke="black" points="467.51,-136.8 346.49,-136.8 346.49,-100.8 467.51,-100.8 467.51,-136.8"></polygon>
+<text text-anchor="middle" x="407" y="-115.8" font-family="Arial" font-size="10.00">SQUARE WAVES OUT</text>
+</g>
+<!-- TIMER_IN&#45;&gt;WAVES -->
+<g id="edge55" class="edge">
+<title>TIMER_IN-&gt;WAVES</title>
+<path fill="none" stroke="black" d="M426.57,-172.5C423.77,-164.95 420.42,-155.92 417.28,-147.48"></path>
+<polygon fill="black" stroke="black" points="420.64,-146.48 413.88,-138.32 414.08,-148.92 420.64,-146.48"></polygon>
+</g>
+<!-- WAVES&#45;&gt;WAVE1 -->
+<g id="edge56" class="edge">
+<title>WAVES-&gt;WAVE1</title>
+<path fill="none" stroke="black" d="M346.08,-107.15C293.03,-97.83 224.35,-85.65 223,-84.8 214.17,-79.25 206.84,-70.68 201.14,-62.2"></path>
+<polygon fill="black" stroke="black" points="204.2,-60.49 196.01,-53.77 198.22,-64.13 204.2,-60.49"></polygon>
+</g>
+<!-- WAVES&#45;&gt;WAVE2 -->
+<g id="edge57" class="edge">
+<title>WAVES-&gt;WAVE2</title>
+<path fill="none" stroke="black" d="M428.7,-100.46C434.25,-95.63 440.05,-90.22 445,-84.8 451.48,-77.71 457.85,-69.46 463.39,-61.73"></path>
+<polygon fill="black" stroke="black" points="466.22,-63.8 469.05,-53.59 460.47,-59.8 466.22,-63.8"></polygon>
+</g>
+<!-- WAVES&#45;&gt;WAVE3 -->
+<g id="edge58" class="edge">
+<title>WAVES-&gt;WAVE3</title>
+<path fill="none" stroke="black" d="M467.69,-108.37C503.73,-103.08 550.38,-96.76 592,-92.8 607.95,-91.28 721.79,-92.21 736,-84.8 746.01,-79.58 754.27,-70.52 760.57,-61.54"></path>
+<polygon fill="black" stroke="black" points="763.4,-63.62 765.82,-53.3 757.49,-59.86 763.4,-63.62"></polygon>
+</g>
+<!-- POTENTIONMETER -->
+<g id="node53" class="node">
+<title>POTENTIONMETER</title>
+<polygon fill="lightgrey" stroke="black" points="380.06,-208.8 277.94,-208.8 277.94,-172.8 380.06,-172.8 380.06,-208.8"></polygon>
+<text text-anchor="middle" x="329" y="-187.8" font-family="Arial" font-size="10.00">POTENTIOMETER</text>
+</g>
+<!-- POTENTIONMETER&#45;&gt;WAVES -->
+<g id="edge59" class="edge">
+<title>POTENTIONMETER-&gt;WAVES</title>
+<path fill="none" stroke="black" d="M348.28,-172.5C357.66,-164.08 369.09,-153.82 379.38,-144.59"></path>
+<polygon fill="black" stroke="black" points="381.44,-147.44 386.54,-138.16 376.76,-142.23 381.44,-147.44"></polygon>
+</g>
+</g>
+</g></svg>            </g>`;
+            
+            container.appendChild(svg);
+            
+            // Initialize pan/zoom functionality
+            let currentScale = 1;
+            let isPanning = false;
+            let startPoint = { x: 0, y: 0 };
+            let currentViewBox = { ...initialViewBox };
+            
+            // Pan functionality
+            svg.addEventListener('mousedown', function(e) {
+                isPanning = true;
+                startPoint = {
+                    x: e.clientX,
+                    y: e.clientY
+                };
+                e.preventDefault();
+            });
+
+            svg.addEventListener('mousemove', function(e) {
+                if (!isPanning) return;
+
+                const dx = (e.clientX - startPoint.x) * currentViewBox.width / svg.clientWidth;
+                const dy = (e.clientY - startPoint.y) * currentViewBox.height / svg.clientHeight;
+
+                currentViewBox.x -= dx;
+                currentViewBox.y -= dy;
+
+                svg.setAttribute('viewBox', 
+                    `${currentViewBox.x} ${currentViewBox.y} ${currentViewBox.width} ${currentViewBox.height}`);
+
+                startPoint = {
+                    x: e.clientX,
+                    y: e.clientY
+                };
+            });
+
+            svg.addEventListener('mouseup', function() {
+                isPanning = false;
+            });
+
+            svg.addEventListener('mouseleave', function() {
+                isPanning = false;
+            });
+
+            // Zoom functionality
+            svg.addEventListener('wheel', function(e) {
+                e.preventDefault();
+                const delta = -Math.sign(e.deltaY);
+                const scaleFactor = delta > 0 ? 0.8 : 1.25;
+                
+                const bbox = svg.getBoundingClientRect();
+                const mouseX = e.clientX - bbox.left;
+                const mouseY = e.clientY - bbox.top;
+                
+                const viewBoxX = currentViewBox.x + (mouseX / svg.clientWidth) * currentViewBox.width;
+                const viewBoxY = currentViewBox.y + (mouseY / svg.clientHeight) * currentViewBox.height;
+                
+                currentViewBox.width *= scaleFactor;
+                currentViewBox.height *= scaleFactor;
+                
+                currentViewBox.x = viewBoxX - (mouseX / svg.clientWidth) * currentViewBox.width;
+                currentViewBox.y = viewBoxY - (mouseY / svg.clientHeight) * currentViewBox.height;
+                
+                svg.setAttribute('viewBox', 
+                    `${currentViewBox.x} ${currentViewBox.y} ${currentViewBox.width} ${currentViewBox.height}`);
+            });
+
+            // Button controls
+            document.querySelector('.zoom-button:nth-child(1)').onclick = function() {
+                const centerX = currentViewBox.x + currentViewBox.width / 2;
+                const centerY = currentViewBox.y + currentViewBox.height / 2;
+                
+                currentViewBox.width *= 0.8;
+                currentViewBox.height *= 0.8;
+                
+                currentViewBox.x = centerX - currentViewBox.width / 2;
+                currentViewBox.y = centerY - currentViewBox.height / 2;
+                
+                svg.setAttribute('viewBox', 
+                    `${currentViewBox.x} ${currentViewBox.y} ${currentViewBox.width} ${currentViewBox.height}`);
+            };
+
+            document.querySelector('.zoom-button:nth-child(2)').onclick = function() {
+                const centerX = currentViewBox.x + currentViewBox.width / 2;
+                const centerY = currentViewBox.y + currentViewBox.height / 2;
+                
+                currentViewBox.width *= 1.25;
+                currentViewBox.height *= 1.25;
+                
+                currentViewBox.x = centerX - currentViewBox.width / 2;
+                currentViewBox.y = centerY - currentViewBox.height / 2;
+                
+                svg.setAttribute('viewBox', 
+                    `${currentViewBox.x} ${currentViewBox.y} ${currentViewBox.width} ${currentViewBox.height}`);
+            };
+        });
+    </script>
+</body>
+</html>
