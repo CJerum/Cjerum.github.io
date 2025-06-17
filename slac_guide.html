@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>SLAC Email Setup Guide</title>
+        <style>
+                body {
+                        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                        max-width: 800px;
+                        margin: 0 auto;
+                        padding: 20px;
+                        line-height: 1.6;
+                        color: #333;
+                }
+
+                h1 {
+                        color: #2c5aa0;
+                        border-bottom: 3px solid #2c5aa0;
+                        padding-bottom: 10px;
+                }
+
+                h2 {
+                        color: #2c5aa0;
+                        margin-top: 30px;
+                }
+
+                h3 {
+                        color: #444;
+                        margin-top: 25px;
+                }
+
+                h4 {
+                        color: #666;
+                        margin-top: 20px;
+                }
+
+                .step {
+                        background: #f8f9fa;
+                        padding: 15px;
+                        border-left: 4px solid #2c5aa0;
+                        margin: 15px 0;
+                }
+
+                .url {
+                        background: #e9ecef;
+                        padding: 8px 12px;
+                        border-radius: 4px;
+                        font-family: 'Courier New', monospace;
+                        font-size: 14px;
+                        margin: 10px 0;
+                        word-break: break-all;
+                }
+
+                .warning {
+                        background: #fff3cd;
+                        border: 1px solid #ffeaa7;
+                        padding: 12px;
+                        border-radius: 4px;
+                        margin: 15px 0;
+                }
+
+                .important {
+                        background: #d1ecf1;
+                        border: 1px solid #bee5eb;
+                        padding: 12px;
+                        border-radius: 4px;
+                        margin: 15px 0;
+                }
+
+                code {
+                        background: #f1f3f4;
+                        padding: 2px 6px;
+                        border-radius: 3px;
+                        font-family: 'Courier New', monospace;
+                }
+
+                ol,
+                ul {
+                        padding-left: 25px;
+                }
+
+                li {
+                        margin: 8px 0;
+                }
+
+                .contact {
+                        background: #f8f9fa;
+                        padding: 15px;
+                        border-radius: 5px;
+                        margin-top: 30px;
+                }
+        </style>
+</head>
+
+<body>
+        <h1>SLAC Email Setup Guide</h1>
+
+        <h2>Prerequisites</h2>
+        <p>You must receive a secure email from SLAC IT Account Services that looks like this:</p>
+        <div class="step">
+                <strong>[EXT] TAKE ACTION ASAP - Secure: SLAC Active Directory (Windows) Account Created</strong><br>
+                From: SLAC IT - Account Services &lt;account-services@slac.stanford.edu&gt;<br>
+                Subject: Stanford secure message notification
+        </div>
+
+        <h2>Step 1: Open the Secure Message</h2>
+        <p>Click the secure message link in the email. The content should contain:</p>
+        <ul>
+                <li>Your temporary username</li>
+                <li>Your temporary password</li>
+                <li>Account creation details and instructions</li>
+        </ul>
+
+        <h2>Step 2: Set Your Permanent Password</h2>
+        <div class="step">
+                <ol>
+                        <li>Navigate to: <div class="url">https://adfs.slac.stanford.edu/adfs/portal/updatepassword
+                                </div>
+                        </li>
+                        <li>Enter your username and the <strong>TEMPORARY</strong> password provided in the secure
+                                message</li>
+                        <li>Create a new password (minimum 14 characters)</li>
+                        <li><strong>Important:</strong> Write down this password - it will be used for all SLAC-related
+                                systems</li>
+                </ol>
+        </div>
+
+        <h2>Step 3: Access Your Email</h2>
+        <div class="step">
+                <ol>
+                        <li>Go to: <div class="url">https://o365.slac.stanford.edu/</div>
+                        </li>
+                        <li>Log in with your username and the new password you just created</li>
+                </ol>
+        </div>
+
+        <h2>VPN Setup (Required for Internal Resources)</h2>
+
+        <h3>Prerequisites for VPN Access</h3>
+        <p>Before setting up the VPN, ensure you have:</p>
+        <ul>
+                <li><strong>SLAC Windows account enabled for VPN access</strong>
+                        <div class="url">Request VPN access:
+                                https://www-internal.slac.stanford.edu/comp/windows/vpn/request/</div>
+                </li>
+                <li><strong>Duo Two-Factor Authentication (2FA) enrolled</strong>
+                        <div class="url">Enrollment: https://www-internal.slac.stanford.edu/twostep/</div>
+                </li>
+        </ul>
+
+        <h3>Method 1: Automatic Installation (Recommended)</h3>
+        <div class="step">
+                <ol>
+                        <li><strong>Navigate to:</strong>
+                                <div class="url">https://vpn.slac.stanford.edu/</div>
+                        </li>
+                        <li><strong>Log in</strong> with your SLAC Windows credentials (do NOT prefix with "SLAC\")</li>
+                        <li><strong>System will automatically detect</strong> your operating system and offer the
+                                appropriate client</li>
+                        <li><strong>Click "Download"</strong> - the VPN client will install automatically</li>
+                        <li><strong>Accept any security prompts</strong> during installation</li>
+                </ol>
+        </div>
+
+        <h3>Method 2: Manual Installation</h3>
+        <p>If automatic installation fails or you need manual control:</p>
+
+        <h4>Windows</h4>
+        <div class="step">
+                <ol>
+                        <li>Download installer from <code>https://vpn.slac.stanford.edu/</code></li>
+                        <li><strong>Right-click installer → "Run as Administrator"</strong> (critical step)</li>
+                        <li>Follow installation prompts</li>
+                        <li>Launch "Cisco AnyConnect Secure Mobility Client" from Start menu</li>
+                </ol>
+        </div>
+
+        <h4>Mac</h4>
+        <div class="step">
+                <ol>
+                        <li>Download installer from <code>https://vpn.slac.stanford.edu/</code></li>
+                        <li>Run installer (system may require security permissions)</li>
+                        <li><strong>Allow system extensions</strong> in System Preferences > Security & Privacy</li>
+                        <li>Launch from Applications > Cisco folder</li>
+                </ol>
+        </div>
+
+        <h3>Connecting to VPN</h3>
+        <div class="step">
+                <ol>
+                        <li><strong>Launch Cisco AnyConnect/Secure Client</strong></li>
+                        <li><strong>Enter server:</strong> <code>vpn.slac.stanford.edu</code></li>
+                        <li><strong>Click Connect</strong></li>
+                        <li><strong>Enter credentials:</strong>
+                                <ul>
+                                        <li>Username: Your SLAC Windows username</li>
+                                        <li>Password: Your SLAC Windows password</li>
+                                </ul>
+                        </li>
+                        <li><strong>Complete Duo 2FA</strong> when prompted</li>
+                        <li><strong>Accept banner/terms</strong> if displayed</li>
+                        <li><strong>Verify connection</strong> - client icon appears in system tray/menu bar</li>
+                </ol>
+        </div>
+
+        <h3>Troubleshooting VPN Issues</h3>
+
+        <h4>Connection Problems</h4>
+        <ul>
+                <li>Ensure using <code>vpn.slac.stanford.edu</code> (not other variations)</li>
+                <li>Disable conflicting VPN software</li>
+        </ul>
+
+        <h4>Authentication Issues</h4>
+        <ul>
+                <li>Verify Duo 2FA is properly enrolled</li>
+                <li>Ensure account has VPN access enabled</li>
+                <li>Check credentials work on other SLAC systems first</li>
+        </ul>
+
+        <h3>Training Portal (VPN Required)</h3>
+        <div class="important">
+                <p>Once connected to the SLAC VPN, you can view your assigned trainings:</p>
+                <p><strong>URL Format:</strong></p>
+                <div class="url">
+                        https://www-internal.slac.stanford.edu/esh-db/training/slaconly/bin/show_training.asp?slac_key=YOUR_SLAC_ID
+                </div>
+                <p><strong>Example:</strong> If your SLAC ID is 123456, visit:</p>
+                <div class="url">
+                        https://www-internal.slac.stanford.edu/esh-db/training/slaconly/bin/show_training.asp?slac_key=123456
+                </div>
+                <p>This will display all trainings assigned to your account.</p>
+        </div>
+
+        <h2>Troubleshooting</h2>
+        <ul>
+                <li>Ensure you're using the exact username and temporary password from the secure message</li>
+                <li>Password must be at least 14 characters</li>
+        </ul>
+</body>
+
+</html>
